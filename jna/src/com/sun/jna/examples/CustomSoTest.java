@@ -9,12 +9,16 @@ import com.sun.jna.Native;
 public class CustomSoTest {
 
 	/**
-	 * 目前先在linux下跑:
+	 * 在linux下跑:
 	 * 
 	 * 首先要把so加载到系统的LD中：
 	 * export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/path/to/so
 	 * 
 	 * 然后执行java -cp .:jna.jar com/sun/jna/examples/CustomSoTest
+	 *
+	 * 在windows下跑:
+	 * 
+	 * 把helloworld.dll放到C:\WINDOWS\system32就可以运行了
 	 */
 	public interface HelloLibrary extends Library {
 		HelloLibrary INSTANCE = (HelloLibrary) Native.loadLibrary("helloworld",
