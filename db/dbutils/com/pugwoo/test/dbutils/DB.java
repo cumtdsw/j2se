@@ -1,7 +1,6 @@
 package com.pugwoo.test.dbutils;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
@@ -41,21 +40,11 @@ public class DB {
 		return ds;
 	}
 
-	private static Connection conn;
-
-	public static Connection getConnection() {
-		try {
-			if (conn == null || conn.isClosed()) {
-				Class.forName(DRIVER);
-				conn = DriverManager.getConnection(DBURL, USERNAME, PASSWORD);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return conn;
+	public static Connection getConnection() throws SQLException {
+		return getDataSource().getConnection();
 	}
-	
-	public static void closeConnection(){
+
+	public static void close(Connection conn) {
 		try {
 			conn.close();
 		} catch (SQLException e) {
@@ -63,7 +52,7 @@ public class DB {
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws SQLException {
 		System.out.println(getDataSource());
 		System.out.println(getConnection());
 	}

@@ -1,5 +1,6 @@
 package com.pugwoo.test.dbutils;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -22,10 +23,12 @@ public class BasicUsage extends TestCase{
 	 */
 	@SuppressWarnings("unchecked")
 	public static void useQueryRunner() throws SQLException {
-		// 第一种，使用Connection
+		// 第一种，使用Connection，需要手工关闭connection
 		QueryRunner qr1 = new QueryRunner();
-		ArrayList result1 = (ArrayList) qr1.query(DB.getConnection(),
+		Connection conn = DB.getConnection();
+		ArrayList result1 = (ArrayList) qr1.query(conn,
 				"select * from person", new ArrayListHandler());
+		DB.close(conn);
 		System.out.println(result1.size());
 
 		// 第二种，使用DataSource
@@ -41,13 +44,16 @@ public class BasicUsage extends TestCase{
 	public static void testInsert() {
 		String sql = "INSERT INTO person(name, age, address) values (?, ?, ?)";
 		QueryRunner qr = new QueryRunner();
+		Connection conn = null;
 		try {
-			qr.update(DB.getConnection(), sql, "karen", 23, "sz");
+			conn = DB.getConnection();
+			int row = qr.update(conn, sql, "karen", 23, "sz");
 			// 如果需要获得插入后的自增ID，则SELECT LAST_INSERT_ID()
+			System.out.println("affected rows: " + row);
 		} catch (SQLException e) {
-			// 如果update出错，就先关闭数据库链接
-			DB.closeConnection();
 			e.printStackTrace();
+		} finally {
+			DB.close(conn);
 		}
 	}
 
@@ -56,7 +62,7 @@ public class BasicUsage extends TestCase{
 	 */
 
 	/**
-	 * 查询参见类：Query
+	 * 查询参见类：com.pugwoo.test.dbutils.Query
 	 */
 
 	/**
@@ -70,12 +76,17 @@ public class BasicUsage extends TestCase{
 		Object[][] data = new Object[][] { { "aaa", 10, "addr1" },
 				{ "bbb", 11, "addr2" }, { "ccc", 12, "addr3" } };
 
+		Connection conn = null;
 		try {
-			qr.batch(DB.getConnection(), sql, data);
+			conn = DB.getConnection();
+			int[] row = qr.batch(conn, sql, data);
+			for(int r : row) {
+				System.out.println("affected row: " + r);
+			}
 		} catch (SQLException e) {
-			// 如果update出错，就先关闭数据库链接
-			DB.closeConnection();
 			e.printStackTrace();
+		} finally {
+			DB.close(conn);
 		}
 	}
 

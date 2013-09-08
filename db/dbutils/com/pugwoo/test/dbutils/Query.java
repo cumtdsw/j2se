@@ -31,12 +31,11 @@ public class Query extends TestCase {
 	/**
 	 * ArrayHandler 将ResultSet的第一行的数据转换成对象数组
 	 * 
-	 * 注：Object[]里的元素已经被转换成对应的格式，如字符串、数字、日期等，挺智能
+	 * 注：Object[]里的元素已经被转换成数据库对应的格式，如字符串、数字、日期等
 	 */
 	public static void testArrayHandler() throws SQLException {
-		Object[] result = (Object[]) new QueryRunner().query(
-				DB.getConnection(), "select * from person where id=?",
-				new ArrayHandler(), 1);
+		Object[] result = (Object[]) new QueryRunner(DB.getDataSource()).query(
+				"select * from person where id=?", new ArrayHandler(), 1);
 		for (Object obj : result) {
 			System.out.println(obj + "," + obj.getClass());
 		}
@@ -46,8 +45,8 @@ public class Query extends TestCase {
 	 * ArrayListHandler 将ResultSet中所有的数据转化成List，List里存放的是Object[]
 	 */
 	public static void testArrayListHandler() throws SQLException {
-		List<Object[]> result = (List<Object[]>) new QueryRunner().query(DB
-				.getConnection(), "select * from person",
+		List<Object[]> result = (List<Object[]>) new QueryRunner(DB
+				.getDataSource()).query("select * from person",
 				new ArrayListHandler());
 		for (Object[] objs : result) {
 			for (Object obj : objs) {
@@ -62,7 +61,7 @@ public class Query extends TestCase {
 	 */
 	@SuppressWarnings("unchecked")
 	public static void testBeanHanler() throws SQLException {
-		Person person = (Person) new QueryRunner().query(DB.getConnection(),
+		Person person = (Person) new QueryRunner(DB.getDataSource()).query(
 				"select * from person where id=?",
 				new BeanHandler(Person.class), 1);
 		System.out.println("name:" + person.getName() + ",age:"
@@ -74,7 +73,7 @@ public class Query extends TestCase {
 	 */
 	@SuppressWarnings("unchecked")
 	public static void testBeanListHanler() throws SQLException {
-		List<Person> list = (List) new QueryRunner().query(DB.getConnection(),
+		List<Person> list = (List) new QueryRunner(DB.getDataSource()).query(
 				"select * from person", new BeanListHandler(Person.class));
 		System.out.println(list.size());
 		for (Person person : list)
@@ -88,7 +87,7 @@ public class Query extends TestCase {
 	 * @throws SQLException
 	 */
 	public static void testScalaHandler() throws SQLException {
-		Long count = (Long) new QueryRunner().query(DB.getConnection(),
+		Long count = (Long) new QueryRunner(DB.getDataSource()).query(
 				"select count(*) from person", new ScalarHandler());
 		System.out.println("count: " + count);
 	}
@@ -99,7 +98,7 @@ public class Query extends TestCase {
 	 * @throws SQLException
 	 */
 	public static void testMapHandler() throws SQLException {
-		Map<String, Object> map = new QueryRunner().query(DB.getConnection(),
+		Map<String, Object> map = new QueryRunner(DB.getDataSource()).query(
 				"select * from person where id=?", new MapHandler(), 1L);
 		Person person = new Person();
 		person.setId((Long) map.get("id"));
@@ -117,11 +116,11 @@ public class Query extends TestCase {
 	@SuppressWarnings("unchecked")
 	public static void testKeyedHandler() throws SQLException {
 		ResultSetHandler<?> h = new KeyedHandler("id");
-		Map<Long, Map> result = (Map<Long, Map>) new QueryRunner()
-				.query(DB.getConnection(),
-						"select id,name,age,address from person", h);
+		Map<Long, Map> result = (Map<Long, Map>) new QueryRunner(DB
+				.getDataSource()).query(
+				"select id,name,age,address from person", h);
 		System.out.println("result: " + result.size());
-		
+
 		Map person = result.get(new Long(1));
 		String name = (String) person.get("name");
 		Integer age = (Integer) person.get("age");

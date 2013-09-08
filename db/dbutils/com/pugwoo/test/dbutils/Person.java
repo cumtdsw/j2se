@@ -13,6 +13,12 @@ CREATE TABLE person (
 通过getter和setter获得和设置数据
  * @author pugwoo
  * @date 2011-11-13
+ * 
+ * 一般来说，建议bean的成员都不要用基本类型
+ * 例如用Integer代替int，这样可以区分数据库里面的null和0
+ * 但是java程序里的基本类型和引用类型比较时要小心，null == 0会报错，此外大数的Integer不能用==比较
+ * 
+ * 也有一种建议是：如果某字段必定有值，例如PK，那么就用基本类型；否则用引用类型
  */
 public class Person {
 
