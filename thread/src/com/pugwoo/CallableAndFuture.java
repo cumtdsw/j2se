@@ -32,6 +32,8 @@ public class CallableAndFuture {
 		public String call() throws Exception {
 			if (this.flag == 0) {
 				// 如果flag的值为0，则立即返回     
+				System.out.println("in flag=0, sleep 5s");
+				Thread.sleep(5000);
 				return "flag = 0";
 			}
 			if (this.flag == 1) {
@@ -62,9 +64,12 @@ public class CallableAndFuture {
 		ExecutorService es = Executors.newFixedThreadPool(3);
 		try {
 			// 提交并执行任务，任务启动时返回了一个 Future对象，     
-			// 如果想得到任务执行的结果或者是异常可对这个Future对象进行操作     
+			// 如果想得到任务执行的结果或者是异常可对这个Future对象进行操作    
+			// 这个动作【不会阻塞】
 			Future future1 = es.submit(task1);
-			// 获得第一个任务的结果，如果调用get方法，当前线程会等待任务执行完毕后才往下执行     
+			// 获得第一个任务的结果，如果调用get方法，当前线程会等待任务执行完毕后才往下执行
+			
+			// 这个动作会【阻塞】
 			System.out.println("task1: " + future1.get());
 
 			Future future2 = es.submit(task2);
