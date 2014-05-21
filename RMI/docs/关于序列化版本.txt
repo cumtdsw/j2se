@@ -1,0 +1,20 @@
+序列化版本serialVersionUID用于实现当bean数据成员发生变化时，新旧版本可以兼容。
+此时，双方的serialVersionUID相等。
+
+在serialVersionUID相等的情况下，
+增加或减少数据成员不会影响序列化（重命名等价于增加一个减少一个）
+将字段从 static 改为非 static，将字段从 transient 改为非 transient 不会影响序列化
+【但是】修改已有的数据成员的类型，会导致序列化失败。(incompatible types for field id)
+
+现象：
+1) 如果服务器使用的bean的serialVersionUID不等于客户端的serialVersionUID，
+   那么会报：java.io.InvalidClassException
+           local class incompatible: stream classdesc serialVersionUID ... 异常
+
+2) 如果bean没有指定serialVersionUID，那么会由java根据数据成员名称类型个数来确定一个
+   当双方serialVersionUID不同，且数据成员有增减时，会报java.io.InvalidClassException
+
+[java-serialization-automatically-handling-changed-fields]
+http://stackoverflow.com/questions/16598685/java-serialization-automatically-handling-changed-fields
+这里问题中，提问者想修改一个数据成员的类型int到Long，出现错误incompatible types for field number
+回答：没有太好的解决办法。

@@ -1,7 +1,10 @@
-package com.pugwoo.remote;
+package com.pugwoo.remote.impl;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+
+import com.pugwoo.remote.HelloInterface;
+import com.pugwoo.remote.ResultInterface;
 
 /**
  * 扩展了UnicastRemoteObject类，并实现远程接口 HelloInterface

@@ -11,3 +11,5 @@
 
 【手动序列化】
 实现Externalizable接口
+
+此外还有【代理序列化】writeReplace和readResolve

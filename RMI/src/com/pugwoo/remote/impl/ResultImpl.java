@@ -1,7 +1,9 @@
-package com.pugwoo.remote;
+package com.pugwoo.remote.impl;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+
+import com.pugwoo.remote.ResultInterface;
 
 @SuppressWarnings("serial")
 public class ResultImpl extends UnicastRemoteObject implements ResultInterface {

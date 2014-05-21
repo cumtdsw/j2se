@@ -1,0 +1,2 @@
+关于 Java 对象序列化您不知道的 5 件事
+[http://www.ibm.com/developerworks/cn/java/j-5things1/]

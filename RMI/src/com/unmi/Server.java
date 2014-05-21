@@ -3,10 +3,12 @@ package com.unmi;
 import java.rmi.Naming;   
 import java.rmi.registry.LocateRegistry;   
 
-import com.pugwoo.remote.HelloImpl;
 import com.pugwoo.remote.HelloInterface;
+import com.pugwoo.remote.IStudentService;
+import com.pugwoo.remote.impl.HelloImpl;
+import com.pugwoo.remote.impl.StudentServiceImpl;
   
-public class HelloServer   
+public class Server   
 {   
    /**  
     * 启动 RMI 注册服务并进行对象注册  
@@ -26,8 +28,11 @@ public class HelloServer
          HelloInterface hello = new HelloImpl();   
            
          //把hello注册到RMI注册服务器上，命名为Hello   
-         Naming.rebind("Hello", hello);   
-            
+         Naming.rebind("Hello", hello);
+         
+         IStudentService studentService = new StudentServiceImpl();
+         Naming.rebind("IStudentService", studentService);
+
          //如果要把hello实例注册到另一台启动了RMI注册服务的机器上   
          //Naming.rebind("//192.168.1.105:1099/Hello",hello);   
            
