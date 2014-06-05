@@ -8,3 +8,6 @@ String是不可变的
 StringBuffer 线程安全
 StringBuilder 线程不安全【更快】
 
+关于Java中的字符编码：
+http://www.ibm.com/developerworks/cn/java/j-lo-chinesecoding/
+

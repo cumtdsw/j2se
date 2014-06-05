@@ -80,7 +80,6 @@ public class NIOEchoServer {
 			buffer.clear();
 			try {
 				count = client.read(buffer);
-				System.out.println("read count: " + count);
 				// 暂时不考虑buffer满了的问题
 				if (count > 0) {
 					String recv = new String(buffer.array(), 0, count, "UTF-8");
@@ -98,6 +97,7 @@ public class NIOEchoServer {
 		if (selectionKey.isWritable()) {
 			buffer.clear();
 			String send = (String) toSend.get(client);
+			toSend.remove(client);
 			buffer.put(send.getBytes());
 			buffer.flip();
 			try {

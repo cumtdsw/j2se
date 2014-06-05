@@ -1,0 +1,25 @@
+在[测试计划]增加一个线程组，在线程组上增加“Sampler-TCP取样器”
+填写IP和port，还有要发送的文本内容。
+最好再增加一个“响应断言”判断一下返回的结果
+
+最后再新增一个“监听器-聚合报告”，再运行。
+
+测试结果：
+<del>Windows下NIOEchoServer的成功率大概只有33%。
+尝试过sleep一会儿也没效果。</del>
+把jmeter的'Re-use connection'去掉之后，发现成功率就几乎是0%了。
+
+发现：当jmeter的线程上去之后，server部署在linux上，client在windows上，测试就几秒钟卡一下。
+当线程数=4时达到最稳定的状态，此时TPS只有1300req/s。线程数=5时就开始卡了。
+这里卡的【原因】是有些请求处理最大时间达到几秒，由于服务器是单线程的，所以所有请求处理都卡死（串行）
+经过代码耗时统计，handleClient的平均耗时只有0.05ms，所以，问题推断出现在网络上。
+确定原因是在windows机器和server机器的网络上（部分）。
+server和client都在linux上时，50个线程，TPS达到3400req/s，差强人意。（此时机器上有其它程序在跑）
+服务器ping延迟稳定在1ms。
+
+【若】server部署在windows上，client也在windows上，则线程数=30~50仍不卡，TPS达到8400req/s,很稳定。
+
+===============netty Echo Server==================
+server和client都在windows上测试，线程数20~50，TPS达到6000req/s，很稳定。
+由于网络问题，server部署linux，client部署windows也会卡。
+
