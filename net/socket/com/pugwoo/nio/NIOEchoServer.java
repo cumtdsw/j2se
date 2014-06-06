@@ -3,12 +3,10 @@ package com.pugwoo.nio;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
-import java.nio.channels.CancelledKeyException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
-import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -66,7 +64,11 @@ public class NIOEchoServer {
 								+ client.socket().getRemoteSocketAddress());
 						client.configureBlocking(false);
 						// 注册到selector，等待数据
-						client.register(selector, SelectionKey.OP_READ);
+						// 【特别注意】：这里不能关注OP_WRITE，因为我们确实还没有数据要写，除非是要向用户输出一些欢迎信息
+						// 【只有数据可以写时才注册OP_WRITE操作】
+						// 避免死锁的一个简单方法就是不要在同一个socket同时注册多个操作。不要同时注册OP_READ和OP_WRITE，要么只注册OP_READ，要么只注册OP_WRITE。
+						SelectionKey key = client.register(selector, SelectionKey.OP_READ);
+						key.attach(ByteBuffer.allocate(128));
 					}
 				} else {
 					handleClient(selectionKey);
@@ -74,11 +76,6 @@ public class NIOEchoServer {
 			}
 		}
 	}
-
-	// 这个仅供给handleClient使用，多线程handleClient可能需要多个buffer
-	private ByteBuffer buffer = ByteBuffer.allocate(1024);
-	// 发送信息
-	private HashMap<SocketChannel, String> toSend = new HashMap<SocketChannel, String>();
 
 	// 处理client的读写操作
 	protected void handleClient(SelectionKey selectionKey) {
@@ -88,66 +85,44 @@ public class NIOEchoServer {
 			// 读
 			if (selectionKey.isReadable()) {
 				System.out.println("is readable");
-				buffer.clear();
-				try {
-					int count = client.read(buffer);
-					// 暂时不考虑buffer满了的问题 TODO
-					if (count > 0) {
-						String recv = new String(buffer.array(), 0, count, "UTF-8");
-						System.out.println("recv-->" + recv);
-						// 将接受的数据添加要发送的地方
-						toSend.put(client, recv);
-						// 等待写入
-						client.register(selector, SelectionKey.OP_WRITE);
-					}
-				} catch (IOException e) {
-					e.printStackTrace();
-					// 远程主机强迫关闭了一个现有的连接。
-					try {
-						selectionKey.cancel();
-						client.close();
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
+				ByteBuffer buffer = (ByteBuffer) selectionKey.attachment();
+				int count = client.read(buffer);
+				if (count > 0) {
+					System.out.println("recv-->"
+							+ new String(buffer.array(), 0, count, "UTF-8"));
+
+					buffer.flip();
+					// 等待写入
+					selectionKey.interestOps(SelectionKey.OP_WRITE);
 				}
 			}
-			
 			// 写
 			if (selectionKey.isWritable()) {
 				System.out.println("is writable");
-				buffer.clear();
-				String send = (String) toSend.get(client);
-				if(send == null) {
-					return;
-				}
-				toSend.remove(client);
-				buffer.put(send.getBytes());
-				buffer.flip();
-				try {
-					int count = client.write(buffer);
-					System.out.println("write count:" + count);
-					// TODO 这里要确保buffer写入完才行
-					
-					if (count > 0) {
-						// 写一个之后就关闭链接，【用于jmeter测试】
-						//selectionKey.cancel();
-						//client.close();
-						//return;
-					}
-					// 等待读取
-					client.register(selector, SelectionKey.OP_READ);
-				} catch (IOException e) {
-					e.printStackTrace();
-					// TODO 这里需要断掉client吗？
+
+				ByteBuffer buffer = (ByteBuffer) selectionKey.attachment();
+				int count = client.write(buffer);
+				System.out.println("write count:" + count);
+
+				// 写一个之后就关闭链接，【用于jmeter测试】
+				/*
+				 * if (count > 0) { selectionKey.cancel(); client.close();
+				 * return; }
+				 */
+
+				if (buffer.remaining() == 0) { // write finished, switch to
+												// OP_READ
+					buffer.clear();
+					selectionKey.interestOps(SelectionKey.OP_READ); // 等待读取
 				}
 			}
-			
-		} catch (CancelledKeyException e) {
+		} catch (IOException e) { // CancelledKeyException
 			/**
 			 * selectionKey.isReadable()和selectionKey.isWritable()
 			 * 在客户端强制退出情况下，抛出CancelledKeyException异常
 			 */
-			try {
+			e.printStackTrace();
+			try { // 远程主机强迫关闭了一个现有的连接。
 				selectionKey.cancel();
 				client.close();
 			} catch (IOException e1) {
