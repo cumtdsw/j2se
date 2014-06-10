@@ -20,8 +20,12 @@ public class TestCopyFile {
 	public static void main(String[] args) throws IOException {
 		FileInputStream inputStream = new FileInputStream("fromFile.txt");
 		FileOutputStream outputStream = new FileOutputStream("toFile.txt");
+		
+		// 大文件则使用copyLarge
 		int bytes = IOUtils.copy(inputStream, outputStream);
 		System.out.println("copy bytes:" + bytes);
+		
+		IOUtils.closeQuietly(outputStream); // 必须
 	}
 
 }
