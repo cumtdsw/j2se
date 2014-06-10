@@ -1,0 +1,18 @@
+对象锁：每个Java Object的实例都有一个锁（队列）。
+
+synchronized(obj)会试图获得obj的对象锁，获得之后进入执行synchronized{}代码块。
+方法的synchronized会获得当前对象的锁，获得之后进入执行方法。
+
+当程序执行完synchronized代码块或synchronized方法后，会释放该对象锁。
+
+对象的wait()方法必须在synchronized中被调用，
+【重点】当obj.wait()调用时，程序会释放obj对象锁，然后阻塞在对象锁队列上。
+
+对象的notify()/notifyAll()方法必须在synchronized中被调用，当它们被调用时，不会释放obj对象锁。
+
+对象的notify()会唤醒任意一个阻塞在对象锁队列上的“线程”。
+对象的notifyAll()会唤醒所有阻塞在对象锁队列上的“线程”。
+
+====
+避免管程锁死的一个特点，就是要注意synchronized最好只有一个obj，而且在该obj上wait()。
+不要synchronized多个对象。
