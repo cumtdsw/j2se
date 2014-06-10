@@ -14,8 +14,7 @@ public class Lock {
 	public synchronized void lock() throws InterruptedException {
 		while (isLocked) {
 			/**
-			 * 【注意这里】
-			 * wait()方法使得当前线程可以释放当前对象锁，因此其它线程也可以进入synchronized代码块，
+			 * 【注意这里】 wait()方法使得当前线程可以释放当前对象锁，因此其它线程也可以进入synchronized代码块，
 			 * 从而都可以阻塞在这里wait()。
 			 */
 			wait();
@@ -32,6 +31,15 @@ public class Lock {
 		isLocked = false;
 		lockingThread = null;
 		notify();
+	}
+
+	public static void main(String[] args) throws InterruptedException {
+		Lock lock = new Lock();
+		lock.lock();
+		// lock.lock(); // 不可重入锁，死在这里
+		lock.unlock();
+		
+		System.out.println("done");
 	}
 
 }
