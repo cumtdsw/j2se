@@ -2,28 +2,40 @@ package com.pugwoo.proxy.http;
 
 /*************************************
  * 一个基础的代理服务器类
+ * http://www.sadtojoy.com/aspx/Detail.aspx?id=4069
  *************************************
+ * 
+ * 注：这份程序原始是有问题的，可能出现卡死。（read阻塞，只能靠TIMEOUT来解）
+ * TIMEOUT是个两难的设置，一方面它防止了阻塞，同时它又要求客户端输入速度要够快。
+ * 
+ * 为了解决这个问题，去掉TIMEOUT，引入了线程。如果要求性能高，这里可以改成NIO。
+ *
+ * 测试http代理是否生效：
+ * telnet ip port
+ * 然后输入GET http://www.baidu.com/ HTTP/1.1
  */
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InterruptedIOException;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class HttpProxy extends Thread {
 	
 	static public int CONNECT_RETRIES = 5;
 	static public int CONNECT_PAUSE = 5;
-	static public int TIMEOUT = 50;
+	static public int TIMEOUT = 50; // ms
 	static public int BUFSIZ = 1024;
 	static public boolean logging = false;
 	static public OutputStream log = null;
+	
 	// 传入数据用的Socket
 	protected Socket socket;
+	
 	// 上级代理服务器，可选
-	static private String parent = null;
-	static private int parentPort = -1;
+	static private String parent = "proxy.tencent.com";
+	static private int parentPort = 8080;
 
 	static public void setParentProxy(String name, int pport) {
 		parent = name;
@@ -67,7 +79,7 @@ public class HttpProxy extends Thread {
 		int port = 80;
 		Socket outbound = null;
 		try {
-			socket.setSoTimeout(TIMEOUT);
+//			socket.setSoTimeout(TIMEOUT);
 			InputStream is = socket.getInputStream();
 			OutputStream os = null;
 			try {
@@ -76,6 +88,10 @@ public class HttpProxy extends Thread {
 				host = "";
 				int state = 0;
 				boolean space;
+				
+				boolean isEnd = false;
+				// 2014年6月16日 16:49:24 fix bug：pipe結束應該等於該socket處理完成。否則is.read()阻塞
+				
 				while (true) {
 					int c = is.read();
 					if (c == -1)
@@ -131,13 +147,14 @@ public class HttpProxy extends Thread {
 									outbound = new Socket(host, port);
 									break;
 								} catch (Exception e) {
+									e.printStackTrace();
 								}
 								// 等待
 								Thread.sleep(CONNECT_PAUSE);
 							}
 							if (outbound == null)
 								break;
-							outbound.setSoTimeout(TIMEOUT);
+//							outbound.setSoTimeout(TIMEOUT);
 							os = outbound.getOutputStream();
 							os.write(line.getBytes());
 							os.write(' ');
@@ -145,9 +162,16 @@ public class HttpProxy extends Thread {
 							os.write(' ');
 							pipe(is, outbound.getInputStream(), os, socket
 									.getOutputStream());
+							
+							// 這裏有bug，break是switch的break，如果pipe結束了，應該斷開客戶端。
+							isEnd = true;
 							break;
 						}
 						host = host + (char) c;
+						break;
+					}
+					
+					if(isEnd) {
 						break;
 					}
 				}
@@ -165,41 +189,93 @@ public class HttpProxy extends Thread {
 			} catch (Exception e2) {
 			}
 		}
+		
+		System.out.println("client socket " + socket.getInetAddress()
+				+ ":" + socket.getPort() + " done!");
 	}
 
-	void pipe(InputStream is0, InputStream is1, OutputStream os0,
-			OutputStream os1) throws IOException {
-		try {
-			int ir;
-			byte bytes[] = new byte[BUFSIZ];
-			while (true) {
-				try {
-					if ((ir = is0.read(bytes)) > 0) {
-						os0.write(bytes, 0, ir);
-						if (logging)
-							writeLog(bytes, 0, ir, true);
-					} else if (ir < 0)
+	/**
+	 * 将is0的输入对接到os0；将is1的输入对接到os1
+	 * @param is0
+	 * @param is1
+	 * @param os0
+	 * @param os1
+	 * @throws IOException
+	 * @throws InterruptedException 
+	 */
+	void pipe(final InputStream is0, final InputStream is1, final OutputStream os0,
+			final OutputStream os1) throws InterruptedException {
+		/**
+		 * 这里改成线程的方式 2014年6月16日 16:32:20
+		 */
+		Thread thread1 = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				int ir;
+				byte bytes[] = new byte[BUFSIZ];
+				while (true) {
+					try {
+						if ((ir = is0.read(bytes)) > 0) {
+							os0.write(bytes, 0, ir);
+							if (logging)
+								writeLog(bytes, 0, ir, true);
+						} else if (ir < 0) {
+							break;
+						}
+					} catch (SocketException e) {
+						if(logging) {
+						    e.printStackTrace(); // Software caused connection abort: socket write error
+						}
 						break;
-				} catch (InterruptedIOException e) {
-				}
-				try {
-					if ((ir = is1.read(bytes)) > 0) {
-						os1.write(bytes, 0, ir);
-						if (logging)
-							writeLog(bytes, 0, ir, false);
-					} else if (ir < 0)
-						break;
-				} catch (InterruptedIOException e) {
+					} catch (IOException e) {
+						if(logging) {
+							e.printStackTrace();
+						}
+					}
 				}
 			}
-		} catch (Exception e0) {
-			System.out.println("Pipe异常: " + e0);
-		}
+		});
+		
+		Thread thread2 = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				int ir;
+				byte bytes[] = new byte[BUFSIZ];
+				while (true) {
+					try {
+						if ((ir = is1.read(bytes)) > 0) {
+							os1.write(bytes, 0, ir);
+							if (logging)
+								writeLog(bytes, 0, ir, false);
+						} else if (ir < 0) {
+							break;
+						}
+					} catch (SocketException e) {
+						if(logging) {
+							e.printStackTrace(); // Software caused connection abort: socket write error
+						}
+						break;
+					} catch (IOException e) {
+						if(logging) {
+							e.printStackTrace();
+						}
+					}
+				}
+			}
+		});
+			
+		thread1.start();
+		thread2.start();
+
+		thread1.join();
+		thread2.join();
+		
 	}
 
+	// TODO 这里用到了反射，性能关注一下
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	static public void startProxy(int port, Class clobj) {
-		ServerSocket ssock;
-		Socket sock;
+		ServerSocket ssock = null;
 		try {
 			ssock = new ServerSocket(port);
 			while (true) {
@@ -220,14 +296,20 @@ public class HttpProxy extends Thread {
 				}
 			}
 		} catch (IOException e) {
+		} finally {
+			try {
+				if(ssock != null)
+					ssock.close();
+			} catch (IOException e) {
+			}
 		}
 	}
 
 	// 测试用的简单main方法
 	static public void main(String args[]) {
-		System.out.println("在端口808启动代理服务器\n");
+		System.out.println("在端口8080启动代理服务器\n");
 		HttpProxy.log = System.out;
 		HttpProxy.logging = false;
-		HttpProxy.startProxy(808, HttpProxy.class);
+		HttpProxy.startProxy(8080, HttpProxy.class);
 	}
 }
