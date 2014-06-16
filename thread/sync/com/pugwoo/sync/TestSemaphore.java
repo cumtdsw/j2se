@@ -10,6 +10,8 @@ import java.util.concurrent.Semaphore;
  * 看了教程发现，Semaphore的使用也不方便，需要2到3个信号量才能实现。
  * 
  * 【信号量最小为0】
+ * 
+ * 2014-6-11 10:43:37  这个需求直接被阻塞队列【秒杀】了！
  */
 public class TestSemaphore {
 
