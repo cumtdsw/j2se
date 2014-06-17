@@ -2,8 +2,8 @@ package com.pugwoo.test;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +17,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.params.ConnRoutePNames;
+import org.apache.http.conn.params.ConnRouteParams;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
@@ -37,6 +38,7 @@ public class Get {
 			FileOutputStream out) throws ClientProtocolException, IOException {
 
 		DefaultHttpClient httpclient = new DefaultHttpClient();
+				
 		String content = null;
 
 		try {
@@ -135,7 +137,7 @@ public class Get {
 		/**
 		 * 演示直接獲取某個網頁
 		 */
-		String url = "http://www.google.com/";
+		String url = "http://www.baidu.com/";
 		String content = get(url, null, proxy, null);
 		System.out.println(content);
 		System.out.println(content.getBytes().length + "字節");
@@ -150,12 +152,12 @@ public class Get {
 		/**
 		 * 演示post數據
 		 */
-		String post_url = "http://127.0.0.1:8080/userRegister/login";
-		Map<String, String> params = new HashMap<String, String>();
-		params.put("username", "nick");
-		params.put("password", "123456");
-		String post_content = post(post_url, params, null, null, null);
-		System.out.println(post_content);
+//		String post_url = "http://127.0.0.1:8080/userRegister/login";
+//		Map<String, String> params = new HashMap<String, String>();
+//		params.put("username", "nick");
+//		params.put("password", "123456");
+//		String post_content = post(post_url, params, null, null, null);
+//		System.out.println(post_content);
 	}
 
 }

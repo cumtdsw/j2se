@@ -8,15 +8,22 @@ package com.pugwoo.proxy.http;
  * 注：这份程序原始是有问题的，可能出现卡死。（read阻塞，只能靠TIMEOUT来解）
  * TIMEOUT是个两难的设置，一方面它防止了阻塞，同时它又要求客户端输入速度要够快。
  * 
- * 为了解决这个问题，去掉TIMEOUT，引入了线程。如果要求性能高，这里可以改成NIO。
+ * 为了解决这个问题，去掉TIMEOUT，引入了线程。如果要求性能高，这里可以改成NIO。TODO
  *
  * 测试http代理是否生效：
  * telnet ip port
  * 然后输入GET http://www.baidu.com/ HTTP/1.1
+ * 
+ * 2014年6月17日 12:23:44
+ * 发现问题：由于这个程序的逻辑是从链接的第一个GET命令中获得remote的sokect ip和端口
+ * 此后的链接都是用这个socket，但是一个链接可能有多个GET命令，当断开不同时，socket就无法公用。
+ * 为此，【临时解决方法】：客户端不要用“Reuse Server Connection”。
+ * 
  */
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -34,8 +41,11 @@ public class HttpProxy extends Thread {
 	protected Socket socket;
 	
 	// 上级代理服务器，可选
-	static private String parent = "proxy.tencent.com";
-	static private int parentPort = 8080;
+	static private String parent = null;
+	static private int parentPort = -1;
+	
+	// 指定出口网卡的ip地址，可选
+	static public String specificIp = null;
 
 	static public void setParentProxy(String name, int pport) {
 		parent = name;
@@ -144,7 +154,12 @@ public class HttpProxy extends Thread {
 							int retry = CONNECT_RETRIES;
 							while (retry-- != 0) {
 								try {
-									outbound = new Socket(host, port);
+									outbound = new Socket();
+									if(specificIp != null && !specificIp.isEmpty()) {
+										outbound.bind(new InetSocketAddress(specificIp, 0));
+									}
+									outbound.connect(new InetSocketAddress(host, port));
+									System.out.println("connect ok:" + host + ":" + port);
 									break;
 								} catch (Exception e) {
 									e.printStackTrace();
@@ -272,7 +287,6 @@ public class HttpProxy extends Thread {
 		
 	}
 
-	// TODO 这里用到了反射，性能关注一下
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	static public void startProxy(int port, Class clobj) {
 		ServerSocket ssock = null;
@@ -310,6 +324,14 @@ public class HttpProxy extends Thread {
 		System.out.println("在端口8080启动代理服务器\n");
 		HttpProxy.log = System.out;
 		HttpProxy.logging = false;
+		
+		// 走代理
+//		HttpProxy.parent = "proxy.tencent.com";
+//		HttpProxy.parentPort = 8080;
+		
+		// 走指定网卡
+//		HttpProxy.specificIp = "10.66.124.54";
+		
 		HttpProxy.startProxy(8080, HttpProxy.class);
 	}
 }
