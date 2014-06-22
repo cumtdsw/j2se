@@ -21,7 +21,9 @@ public class HelloWorldServer {
 		ServerBootstrap bootstrap = new ServerBootstrap(
 				new NioServerSocketChannelFactory(Executors
 						.newCachedThreadPool(), Executors.newCachedThreadPool()));
+		
 		bootstrap.setPipelineFactory(new ChannelPipelineFactory() {
+			
 			@Override
 			public ChannelPipeline getPipeline() throws Exception {
 				ChannelPipeline pipeline = Channels.pipeline();

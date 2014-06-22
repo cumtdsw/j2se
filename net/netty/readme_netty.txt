@@ -8,9 +8,9 @@ http://blog.csdn.net/vba_2001/article/details/7307125
 
 概念:
 Bootstrap “引导程序”类，初始化channel的辅助类，子类有：
-1) ServerBootstrap  接收connection请求
-2) ClientBootstrap  发送connectoin请求
-3) ConnectionlessBootstrap
+1) ServerBootstrap  服务器端，接收connection请求
+2) ClientBootstrap  客户端，发送connectoin请求
+3) ConnectionlessBootstrap 对应于UDP
 
 Uptream接收请求，对应于ChannelUpstreamHandler，这一过程相当于接收处理外来请求的过程。
 upstream event有：”messageReceived”、 “exceptionCaught”、”channelOpen”、”channelClosed”、 “channelBound”、”channelUnbound”、 “channelConnected”、”writeComplete”、”channelDisconnected”、”channelInterestChanged”。
