@@ -23,6 +23,15 @@ public class HelloWorldServerHandler extends SimpleChannelUpstreamHandler {
 
 		String msg = (String) e.getMessage();
 		System.out.println("read msg:" + msg);
+		
+		/**
+		 * netty默认会创建2倍cpu核数的worker线程
+		 * 如果这里sleep2秒，开8个worker线程的话，tps就只有4
+		 * 
+		 * 换句话说，如果messageReceived不是异步IO也不是CPU密集型的处理的话，要小心。
+		 */
+		//System.out.println(Thread.currentThread().getName());
+		//Thread.sleep(2000);
 
 		if(msg != null && msg.startsWith("bye")) {
 			e.getChannel().close();
