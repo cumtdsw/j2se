@@ -18,6 +18,7 @@ public class HelloWorldServerHandler extends SimpleChannelUpstreamHandler {
 	@Override
 	public void messageReceived(ChannelHandlerContext ctx, MessageEvent e)
 			throws Exception {
+		
 		// 通过e.getMessage()获得数据,如果有decoder，这个是由decoder解码后返回的Object
 
 		String msg = (String) e.getMessage();
@@ -28,8 +29,6 @@ public class HelloWorldServerHandler extends SimpleChannelUpstreamHandler {
 		} else {
 			e.getChannel().write(msg);
 		}
-
-		// 为了测试，发送一次消息后就关闭
 	}
 
 	@Override

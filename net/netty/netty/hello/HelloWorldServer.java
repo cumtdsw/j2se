@@ -27,10 +27,13 @@ public class HelloWorldServer {
 			@Override
 			public ChannelPipeline getPipeline() throws Exception {
 				ChannelPipeline pipeline = Channels.pipeline();
-				pipeline.addLast("decoder", new StringDecoder());
-				pipeline.addLast("encoder", new StringEncoder());
+				
+				pipeline.addLast("decoder", new StringDecoder()); // 把输入byte[]转换成string
+				pipeline.addLast("encoder", new StringEncoder()); // 把输出string转换成byte[]
+				
 				// 一般只需要在这里修改一下
 				pipeline.addLast("handler", new HelloWorldServerHandler());
+				
 				return pipeline;
 			}
 		});

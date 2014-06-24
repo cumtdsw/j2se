@@ -105,10 +105,11 @@ public class NIOEchoServer {
 				System.out.println("write count:" + count);
 
 				// 写一个之后就关闭链接，【用于jmeter测试】
-				/*
-				 * if (count > 0) { selectionKey.cancel(); client.close();
-				 * return; }
-				 */
+//				if (count > 0) {
+//					selectionKey.cancel();
+//					client.close();
+//				    return;
+//				}
 
 				if (buffer.remaining() == 0) { // write finished, switch to
 												// OP_READ
