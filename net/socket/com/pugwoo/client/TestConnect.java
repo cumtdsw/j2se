@@ -12,28 +12,29 @@ import java.net.Socket;
  */
 public class TestConnect {
 	
-	private static byte[] getIp(String strIp) {
-		if (strIp != null) {
-			String strs[] = strIp.split("\\.");
-			if (strs.length == 4) {
-				byte ip[] = new byte[] { (byte) Integer.parseInt(strs[0]),
-						(byte) Integer.parseInt(strs[1]),
-						(byte) Integer.parseInt(strs[2]),
-						(byte) Integer.parseInt(strs[3]) };
-				return ip;
-			}
-		}
-		return null;
-	}
+//	private static byte[] getIp(String strIp) {
+//		if (strIp != null) {
+//			String strs[] = strIp.split("\\.");
+//			if (strs.length == 4) {
+//				byte ip[] = new byte[] { (byte) Integer.parseInt(strs[0]),
+//						(byte) Integer.parseInt(strs[1]),
+//						(byte) Integer.parseInt(strs[2]),
+//						(byte) Integer.parseInt(strs[3]) };
+//				return ip;
+//			}
+//		}
+//		return null;
+//	}
 
 	public static void main(String[] args) throws IOException {
 		Socket soc = new java.net.Socket();
 		
-		soc.bind(new InetSocketAddress("10.66.124.54", 0));
+		soc.bind(new InetSocketAddress("10.66.113.71", 0));
 		
 		System.out.println("connecting");
-		soc.connect(new InetSocketAddress("220.181.159.91", 80));
+		soc.connect(new InetSocketAddress("10.66.118.33", 8888));
 		System.out.println("connect ok");
 		
+		soc.close();
 	}
 }
