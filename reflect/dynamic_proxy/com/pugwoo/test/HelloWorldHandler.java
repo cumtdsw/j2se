@@ -4,6 +4,8 @@ import java.lang.reflect.Method;
 
 /**
  * 2010年12月6日 下午08:46:06
+ * 
+ * 实际上，这是一个通用的Handler，由client使用方来指定使用
  */
 public class HelloWorldHandler implements InvocationHandler {
 
@@ -23,6 +25,8 @@ public class HelloWorldHandler implements InvocationHandler {
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args)
 			throws Throwable {
+		
+		//System.out.println(proxy.getClass()); // com.sun.proxy.$Proxy0
 
 		// 方法调用之前
 		doBefore();
@@ -37,11 +41,11 @@ public class HelloWorldHandler implements InvocationHandler {
 	}
 
 	private void doBefore() {
-		System.out.println("before method invoke!");
+		System.out.println("HelloWorldHandler before method invoke!");
 	}
 
 	private void doAfter() {
-		System.out.println("after method invoke!");
+		System.out.println("HelloWorldHandler after method invoke!");
 	}
 
 }

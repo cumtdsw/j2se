@@ -4,6 +4,8 @@ import java.lang.reflect.Proxy;
 
 /**
  * 2010年12月6日 下午08:46:06
+ * 
+ * 
  */
 public class Client {
 
@@ -16,8 +18,12 @@ public class Client {
 		InvocationHandler handler = new HelloWorldHandler(hw);
 		
 		//创建动态代理对象
+		/**
+		 * Proxy.newProxyInstance的作用：
+		 * 1) 
+		 */
 		HelloWorld proxy = (HelloWorld) Proxy.newProxyInstance(
-				hw.getClass().getClassLoader(),
+				hw.getClass().getClassLoader(), // TODO 这个的作用是？
 				hw.getClass().getInterfaces(),
 				handler);
 		
