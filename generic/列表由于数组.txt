@@ -1,0 +1,7 @@
+来自于Effective Java 第25条
+
+数组是协变的（covariant），泛型是不可变的（invariant）。
+
+这意味着，数组可以转化为其父类的引用，而泛型则不行。
+
+详细参考UseGenericThanArray.java例子
