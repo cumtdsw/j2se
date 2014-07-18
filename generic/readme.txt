@@ -13,7 +13,7 @@
 1. 类和接口定义时名称上加上<T>或<T1,T2>等。
 2. 方法在关键词后面，返回值前面加上<E>。
 
-泛型支持限制<T extends Number>
+泛型支持限制<T extends Number> 和 <T extends Number & Comparator>
 
 泛型不支持基本类型 int long等，只支持引用类型。
 
