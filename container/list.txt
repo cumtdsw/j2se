@@ -1,0 +1,17 @@
+最高抽象接口Collection<E>
+
+ListIterator接口支持双向遍历，支持在当前位置set和add对象，支持创建从index开始的iterator。
+
+SubList的实现在AbstractList中，抽象上实现，物理上并没有复制一份。
+
+如果Iterator在遍历过程中，容器发生了变化，那会怎么样？
+1) List不支持并发操作，
+2) AbstractList中有个modCount变量，每次改变list，这个值就会自增，List就是靠这个值来判断是否被并发修改了。
+
+ArrayList中存放数据的变量叫：Object[] elementData。
+关于自动扩展容量：int newCapacity = oldCapacity + (oldCapacity >> 1); // 最基本一行
+关于remove，移动之后，要把不相关的元素设置为null，以便GC回收。
+
+ArrayList和LinkedList的实现方式差异比较大，所以它们自己实现了优化的Iterator.
+
+LinkedList是双向链表实现。
