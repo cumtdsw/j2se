@@ -1,6 +1,7 @@
 package com.pugwoo.test;
 
 import java.util.Scanner;
+import java.util.regex.MatchResult;
 
 /**
  * 2011.11.4
@@ -33,5 +34,17 @@ public class TestScanner {
 		 * 然后继续下一组的匹配
 		 * [效率未知]
 		 */
+		// 例子来自于java编程思想一书
+		String threatData = "58.27.82.16@02/10/2005\n205.87.96.15@02/11/2006\n";
+		scanner = new Scanner(threatData);
+		String pattern = "(\\d+[.]\\d+[.]\\d+[.]\\d+)@(\\d{2}/\\d{2}/\\d{4})";
+		while(scanner.hasNext(pattern)) { // 重点
+			scanner.next(pattern); // 和iterator一样，先hasNext，再next
+			MatchResult match = scanner.match();
+			String ip = match.group(1);
+			String date = match.group(2);
+			System.out.format("Thread on %s from %s\n", date, ip);
+		}
+		
 	}
 }
