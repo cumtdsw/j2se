@@ -1,0 +1,22 @@
+java应用环境中不同的class分别由不同的ClassLoader负责加载。
+
+Bootstrap ClassLoader 负责加载java基础类，主要是 %JRE_HOME/lib/ 目录下的rt.jar、resources.jar、charsets.jar和class等
+Extension ClassLoader 负责加载java扩展类，主要是 %JRE_HOME/lib/ext 目录下的jar和class
+App ClassLoader       负责加载当前java应用的classpath中的所有类
+
+Bootstrap ClassLoader是Extension ClassLoader的parent，
+Extension ClassLoader是App ClassLoader的parent。
+但是这并不是继承关系，只是语义上的定义，
+基本上，每一个ClassLoader实现，都有一个Parent ClassLoader。
+
+ClassLoader的加载采用委托模式，如果父类可以加载，则由父类加载。
+加载之后classLoader可以有缓存，下次就不再从父类去加载一遍了。
+
+关于自定义ClassLoader：
+findClass      定义查找Class的方式
+defineClass    将类文件字节码加载为jvm中的class
+findResource   定义查找资源的方式
+
+Extension ClassLoader 和 App ClassLoader都是java.net.URLClassLoader的子类。
+
+【】
