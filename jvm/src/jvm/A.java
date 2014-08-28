@@ -10,7 +10,7 @@ public class A {
 	
 	public static void main(String[] args) throws InstantiationException, IllegalAccessException {
 		Class<Integer> clazz = int.class;
-		System.out.println(clazz.getCanonicalName()); // 无法newInstance
+		System.out.println(clazz.getCanonicalName()); // 无法newInstance,因为它是基本类型
 		
 		System.out.println(clazz instanceof Object);
 	}
