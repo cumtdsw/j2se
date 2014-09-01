@@ -18,7 +18,6 @@ public class TestListAllClass {
 
 	/**
 	 * 获得一个jar包的所有entry，也就是jar包中所有文件的列表。
-	 * 
 	 * 当然后缀class结尾的就是编译java后的文件。
 	 * 
 	 * @param filePath
