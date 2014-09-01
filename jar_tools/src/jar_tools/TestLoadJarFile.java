@@ -16,7 +16,7 @@ import java.util.Vector;
 public class TestLoadJarFile {
 	
 	public static void listLoadedClasses(ClassLoader byClassLoader) {
-	    Class clKlass = byClassLoader.getClass();
+	    Class<?> clKlass = byClassLoader.getClass();
 	    System.out.println("Classloader: " + clKlass.getCanonicalName());
 	    while (clKlass != java.lang.ClassLoader.class) {
 	        clKlass = clKlass.getSuperclass();
@@ -25,8 +25,8 @@ public class TestLoadJarFile {
 	        java.lang.reflect.Field fldClasses = clKlass
 	                .getDeclaredField("classes");
 	        fldClasses.setAccessible(true);
-	        Vector classes = (Vector) fldClasses.get(byClassLoader);
-	        for (Iterator iter = classes.iterator(); iter.hasNext();) {
+	        Vector<?> classes = (Vector<?>) fldClasses.get(byClassLoader);
+	        for (Iterator<?> iter = classes.iterator(); iter.hasNext();) {
 	            System.out.println("   Loaded " + iter.next());
 	        }
 	    } catch (SecurityException e) {
@@ -54,7 +54,7 @@ public class TestLoadJarFile {
 		ClassLoader cl = new URLClassLoader(urls, null);
 
 		// 只有loadClass才会load到jvm，属于懒加载的设计
-		Class cls = cl.loadClass("com.alibaba.fastjson.util.UTF8Decoder");
+		Class<?> cls = cl.loadClass("com.alibaba.fastjson.util.UTF8Decoder");
 		System.out.println("load class:" + cls.getName());
 		
 		Method[] methods = cls.getDeclaredMethods(); // 不包括父类的
