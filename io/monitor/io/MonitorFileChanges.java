@@ -20,6 +20,16 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * java 7 监控文件状态(修改，删除，增加) 2014年9月1日 19:47:21
+ * 
+ * 经过测试：
+ * 1) 注册register path注册的是文件夹，每个文件夹（包括子目录）都需要注册。
+ *    在运行时创建新目录时，需要register新创建的目录。
+ * 2) 文件夹重命名：触发文件夹的Delete旧文件夹和create新文件夹
+ *    然后注册(update)新的文件夹
+ * 3) 文件重命名：触发delete旧文件，create新文件，再触发modify新文件
+ * 4) 移动文件夹等价于重命名
+ * 5) 有个问题，当删除一个文件夹，这个文件夹有子文件夹，子文件夹里有文件，
+ *    那么会出现删除不了的问题，尚无解决办法
  */
 public class MonitorFileChanges {
 
