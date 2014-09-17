@@ -1,0 +1,14 @@
+2012年10月27日 12:38:16
+动态代理是AOP的原理
+
+1. 动态代理只支持接口，所以首先需要有个一个接口及其实现。
+例如 HelloWorld接口和HelloWorldImpl实现。
+
+2. 拦截的逻辑Handler需要实现InvocationHandler接口，
+   实现public Object invoke(Object proxy, Method method, Object[] args)方法
+   在这个方法中，就做切面需要做的事情。
+
+3. 使用：
+    public static Object newProxyInstance(ClassLoader loader,
+                                          Class<?>[] interfaces,
+                                          InvocationHandler h)

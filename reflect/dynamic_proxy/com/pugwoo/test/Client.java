@@ -11,24 +11,13 @@ public class Client {
 
 	public static void main(String args[]){
 		
-		//获取一个业务接口的实现对象
-		HelloWorld hw = new HelloWorldImpl();
+		HelloWorldHandler proxy = new HelloWorldHandler();
 		
-		//获取一个InvocationHandler实现，此处是HelloWorldHandler对象
-		InvocationHandler handler = new HelloWorldHandler(hw);
-		
-		//创建动态代理对象
-		/**
-		 * Proxy.newProxyInstance的作用：
-		 * 1) 
-		 */
-		HelloWorld proxy = (HelloWorld) Proxy.newProxyInstance(
-				hw.getClass().getClassLoader(), // TODO 这个的作用是？
-				hw.getClass().getInterfaces(),
-				handler);
+		HelloWorld hello = (HelloWorld) proxy.bind(new HelloWorldImpl());
 		
 		//通过动态代理对象调用sayHelloWorld()方法
-		proxy.sayHello();
+		hello.sayHello();
 		
+		System.out.println("hello class:" + hello.getClass());
 	}
 }

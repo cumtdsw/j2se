@@ -1,6 +1,7 @@
 package com.pugwoo.test;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 
 /**
  * 2010年12月6日 下午08:46:06
@@ -8,14 +9,18 @@ import java.lang.reflect.Method;
  * 实际上，这是一个通用的Handler，由client使用方来指定使用
  */
 public class HelloWorldHandler implements InvocationHandler {
+	
+	private Object target;
 
 	/**
-	 * 要代理的原始对象
+	 * 绑定委托对象并返回一个代理类 
+	 * @param target
+	 * @return
 	 */
-	private Object objOriginal;
-
-	public HelloWorldHandler(Object obj) {
-		this.objOriginal = obj;
+	public Object bind(Object target) {
+		this.target = target;
+		return Proxy.newProxyInstance(target.getClass().getClassLoader(),
+				target.getClass().getInterfaces(), this);
 	}
 
 	/**
@@ -27,16 +32,14 @@ public class HelloWorldHandler implements InvocationHandler {
 			throws Throwable {
 		
 		//System.out.println(proxy.getClass()); // com.sun.proxy.$Proxy0
-
 		// 方法调用之前
 		doBefore();
 
 		// 调用原始对象的方法
-		Object result = method.invoke(this.objOriginal, args);
+		Object result = method.invoke(target, args);
 
 		// 方法调用之后
 		doAfter();
-
 		return result;
 	}
 
