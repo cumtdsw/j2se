@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="test"/>
+	<classpathentry including="**/*.java" kind="src" output="target/classes" path="src">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" output="target/test-classes" path="test">
+		<attributes>
+			<attribute name="optional" value="true"/>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="src" path="socket"/>
-	<classpathentry kind="src" path="httpclient"/>
-	<classpathentry kind="src" path="netty"/>
+	<classpathentry including="**/*.java" kind="src" path="httpclient"/>
+	<classpathentry including="**/*.java" kind="src" path="netty"/>
 	<classpathentry kind="src" path="proxy"/>
 	<classpathentry kind="src" path="mina"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="lib/mina/commons-lang-2.6.jar"/>
 	<classpathentry kind="lib" path="lib/mina/commons-logging-1.0.3.jar"/>
 	<classpathentry kind="lib" path="lib/mina/javassist-3.11.0.GA.jar"/>
@@ -28,14 +42,12 @@
 	<classpathentry kind="lib" path="lib/mina/spring-2.5.6.jar"/>
 	<classpathentry kind="lib" path="lib/mina/tomcat-apr-5.5.23.jar"/>
 	<classpathentry kind="lib" path="lib/mina/xbean-spring-3.7.jar"/>
-	<classpathentry kind="lib" path="lib/httpclient/commons-codec-1.6.jar"/>
-	<classpathentry kind="lib" path="lib/httpclient/commons-logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="lib/httpclient/fluent-hc-4.2.2.jar"/>
-	<classpathentry kind="lib" path="lib/httpclient/httpclient-4.2.2.jar"/>
-	<classpathentry kind="lib" path="lib/httpclient/httpclient-cache-4.2.2.jar"/>
-	<classpathentry kind="lib" path="lib/httpclient/httpcore-4.2.2.jar"/>
-	<classpathentry kind="lib" path="lib/httpclient/httpmime-4.2.2.jar"/>
 	<classpathentry kind="lib" path="lib/netty/com.google.protobuf-2.4.0.jar"/>
 	<classpathentry kind="lib" path="lib/netty/netty-3.9.2.Final.jar" sourcepath="lib/netty/netty-3.9.2.Final-sources.jar"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="con" path="org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="target/classes"/>
 </classpath>
