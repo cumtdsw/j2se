@@ -2,11 +2,15 @@ package com.pugwoo.test;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.http.HttpHost;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.junit.Test;
 
 import com.pugwoo.utils.Net;
@@ -31,6 +35,24 @@ public class TestNet {
 		String url = "http://www.baidu.com/";
 		HttpRespContent content = Net.get(url, null, proxy, null);
 
+		System.out.println(content.content);
+		System.out.println(content.content.getBytes().length + "字节");
+	}
+	
+	@Test
+	public void testGetWithCookie() throws ClientProtocolException, IOException {
+		HttpHost proxy = null;
+		 proxy = new HttpHost("127.0.0.1", 8888, "http");
+
+		List<Cookie> cookies = new ArrayList<Cookie>();
+		BasicClientCookie cookie = new BasicClientCookie("test", "hello");
+		cookie.setDomain("baidu.com"); // 必须设置，它必须是url的host的后缀，例如com都可以
+//	    cookie.setPath("/");
+		cookies.add(cookie);
+		
+		String url = "http://www.baidu.com/";
+		HttpRespContent content = Net.get(url, null, proxy, null, cookies);
+		
 		System.out.println(content.content);
 		System.out.println(content.content.getBytes().length + "字节");
 	}

@@ -17,7 +17,10 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.cookie.Cookie;
+import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
@@ -30,6 +33,8 @@ import org.apache.http.util.EntityUtils;
  * 2014年10月21日 13:48:21 去掉重试机制，交给上一层去完成
  * 
  * 2014年10月21日 14:52:51 使用新版4.3.5的httpclient，并修改GET和POST方法
+ * 
+ * 2014年10月22日 09:25:38 增加发送自定义cookie，但不会管理cookie上下文
  */
 public class Net {
 
@@ -43,17 +48,37 @@ public class Net {
 	}
 
 	/**
-	 * 從url獲取數據<br>
-	 * 1.如果encode不為null，則使用編碼，否則不使用編碼<br>
-	 * 2.如果代理proxy不為null，則使用proxy<br>
-	 * 3.如果out不為null，則http content寫入到文件中，仅返回头数据；<br>
-	 * 如果out為null，則返回完整的HttpRespContent
+	 * 同get方法
 	 */
 	public static HttpRespContent get(String url, String encode,
 			HttpHost proxy, FileOutputStream out)
 			throws ClientProtocolException, IOException {
+		return get(url, encode, proxy, out, null);
+	}
 
-		CloseableHttpClient httpclient = HttpClients.createDefault();
+	/**
+	 * 從url獲取數據<br>
+	 * 1.如果encode不為null，則使用編碼，否則不使用編碼<br>
+	 * 2.如果代理proxy不為null，則使用proxy<br>
+	 * 3.如果out不為null，則http content寫入到文件中，仅返回头数据；<br>
+	 * 如果out為null，則返回完整的HttpRespContent<br>
+	 * 4.如果cookie不为null，则使用该cookie发送
+	 */
+	public static HttpRespContent get(String url, String encode,
+			HttpHost proxy, FileOutputStream out, List<Cookie> cookies)
+			throws ClientProtocolException, IOException {
+
+		CloseableHttpClient httpclient;
+		if(cookies == null) {
+			httpclient = HttpClients.createDefault();
+		} else {
+			BasicCookieStore cookieStore = new BasicCookieStore();
+			for(Cookie cookie : cookies) {
+				cookieStore.addCookie(cookie);
+			}
+			httpclient = HttpClientBuilder.create().setDefaultCookieStore(cookieStore).build();
+		}
+		
 		// 配置超时时间和代理
 		RequestConfig requestConfig = RequestConfig.custom()
 				.setSocketTimeout(10000).setConnectTimeout(10000)
@@ -100,6 +125,15 @@ public class Net {
 	}
 
 	/**
+	 * 同post
+	 */
+	public static HttpRespContent post(String url, Map<String, String> params,
+			String encode, HttpHost proxy, FileOutputStream out)
+			throws ClientProtocolException, IOException {
+		return post(url, params, encode, proxy, out, null);
+	}
+
+	/**
 	 * 支持post数据，其它说明同GET
 	 * 
 	 * @param url
@@ -112,10 +146,21 @@ public class Net {
 	 * @throws IOException
 	 */
 	public static HttpRespContent post(String url, Map<String, String> params,
-			String encode, HttpHost proxy, FileOutputStream out)
+			String encode, HttpHost proxy, FileOutputStream out,
+			List<Cookie> cookies)
 			throws ClientProtocolException, IOException {
 
-		CloseableHttpClient httpclient = HttpClients.createDefault();
+		CloseableHttpClient httpclient;
+		if(cookies == null) {
+			httpclient = HttpClients.createDefault();
+		} else {
+			BasicCookieStore cookieStore = new BasicCookieStore();
+			for(Cookie cookie : cookies) {
+				cookieStore.addCookie(cookie);
+			}
+			httpclient = HttpClientBuilder.create().setDefaultCookieStore(cookieStore).build();
+		}
+		
 		// 配置超时时间和代理
 		RequestConfig requestConfig = RequestConfig.custom()
 				.setSocketTimeout(10000).setConnectTimeout(10000)
