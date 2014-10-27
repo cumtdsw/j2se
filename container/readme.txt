@@ -1,4 +1,4 @@
-guava是google开源的非常出名的java基础包
+guava是google开源的非常出名的java基础包，还是挺多人用的
 https://code.google.com/p/guava-libraries/
 
 文档：
