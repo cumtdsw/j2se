@@ -10,7 +10,7 @@ public class Test {
 				"2",
 				"a + b + 3",
 				"(a - b) + 3",
-				"a + (b * 3",							     	
+				"a + (b * 3)",							     	
 		};
 
 		for (String s : testStr) {
@@ -27,6 +27,6 @@ public class Test {
 		CommonTokenStream tokens = new CommonTokenStream(lexer);
 		ExprParser parser = new ExprParser(tokens);
 
-		parser.prog();		
+		parser.prog();	
 	}
 }
