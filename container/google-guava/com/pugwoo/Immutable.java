@@ -1,5 +1,7 @@
 package com.pugwoo;
 
+import java.util.Map;
+
 import junit.framework.TestCase;
 
 import com.google.common.collect.ImmutableMap;
@@ -21,6 +23,12 @@ public class Immutable extends TestCase {
 	public static void main(String[] args) {
 		System.out.println(LUCKY_NUMBERS);
 		System.out.println(map);
+		
+		/**
+		 * 如果需要创建一个为空的只读map，那么也可以这样创建，速度极快
+		 */
+		Map<String, Object> extras = ImmutableMap.of();
+		System.out.println(extras);
 	}
 	
 	
