@@ -25,10 +25,14 @@ public class Immutable extends TestCase {
 		System.out.println(map);
 		
 		/**
-		 * 如果需要创建一个为空的只读map，那么也可以这样创建，速度极快
+		 * 如果需要创建一个只读map，那么也可以这样创建，速度极快
 		 */
 		Map<String, Object> extras = ImmutableMap.of();
 		System.out.println(extras);
+		
+		Map<String, Long> immuMap = 
+				ImmutableMap.of("one", 1L, "two", 2L);
+		System.out.println(immuMap);
 	}
 	
 	

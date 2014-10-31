@@ -18,13 +18,12 @@ public class TestThrowRuntimeException {
 			a();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
+			// 上面这一行等价于：
+			// Throwables.propagate(e);
 		}
 	}
 
 	public static void main(String[] args) {
-		// 对应与guava里面的这个方法，包装ex
-//		Throwables.propagate(throwable);
-		
 		try {
 			b();
 		} catch (Exception e) {
