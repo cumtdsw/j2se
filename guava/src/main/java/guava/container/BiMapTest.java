@@ -1,4 +1,4 @@
-package com.pugwoo;
+package guava.container;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;

@@ -1,4 +1,4 @@
-package com.pugwoo;
+package guava.container;
 
 import java.util.Map;
 

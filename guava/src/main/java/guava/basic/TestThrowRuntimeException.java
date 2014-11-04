@@ -1,9 +1,10 @@
-package com.pugwoo;
+package guava.basic;
 
 import com.google.common.base.Throwables;
 
 /**
- * 2014年10月30日 15:57:28 刚刚学习到，如果一个接口没有声明异常，但是实现中有异常需要带出去，
+ * 2014年10月30日 15:57:28 <br>
+ * 刚刚学习到，如果一个接口没有声明异常，但是实现中有异常需要带出去，<br>
  * 那么就包装成RuntimeException再抛出去
  */
 public class TestThrowRuntimeException {
@@ -17,9 +18,9 @@ public class TestThrowRuntimeException {
 		try {
 			a();
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			Throwables.propagate(e);
 			// 上面这一行等价于：
-			// Throwables.propagate(e);
+			// throw new RuntimeException(e);
 		}
 	}
 
