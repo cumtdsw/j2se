@@ -21,6 +21,9 @@ public class CreateCollectionUtils {
 		map.put("two", 2L);
 		
 		System.out.println(map);
+		
+		// 通过Maps.uniqueIndex构建map，即将List映射为map
+		// 但也不是很直观，还不如原来java写法
 	}
 
 }
