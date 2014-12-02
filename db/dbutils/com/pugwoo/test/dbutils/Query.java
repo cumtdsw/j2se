@@ -61,6 +61,7 @@ public class Query extends TestCase {
 	 */
 	@SuppressWarnings("unchecked")
 	public static void testBeanHanler() throws SQLException {
+		@SuppressWarnings("rawtypes")
 		Person person = (Person) new QueryRunner(DB.getDataSource()).query(
 				"select * from person where id=?",
 				new BeanHandler(Person.class), 1);
@@ -71,9 +72,9 @@ public class Query extends TestCase {
 	/**
 	 * BeanHandler，自动装载Bean（多个） 使用getter和setter来赋值
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({"unchecked", "rawtypes"})
 	public static void testBeanListHanler() throws SQLException {
-		List<Person> list = (List) new QueryRunner(DB.getDataSource()).query(
+		List<Person> list = (List<Person>) new QueryRunner(DB.getDataSource()).query(
 				"select * from person", new BeanListHandler(Person.class));
 		System.out.println(list.size());
 		for (Person person : list)
@@ -116,12 +117,12 @@ public class Query extends TestCase {
 	@SuppressWarnings("unchecked")
 	public static void testKeyedHandler() throws SQLException {
 		ResultSetHandler<?> h = new KeyedHandler("id");
-		Map<Long, Map> result = (Map<Long, Map>) new QueryRunner(DB
+		Map<Long, Map<?,?>> result = (Map<Long, Map<?,?>>) new QueryRunner(DB
 				.getDataSource()).query(
 				"select id,name,age,address from person", h);
 		System.out.println("result: " + result.size());
 
-		Map person = result.get(new Long(1));
+		Map<?,?> person = result.get(new Long(1));
 		String name = (String) person.get("name");
 		Integer age = (Integer) person.get("age");
 		System.out.println("name:" + name + ",age:" + age);

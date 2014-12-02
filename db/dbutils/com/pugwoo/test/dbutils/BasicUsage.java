@@ -21,19 +21,18 @@ public class BasicUsage extends TestCase{
 	 * 
 	 * @throws SQLException
 	 */
-	@SuppressWarnings("unchecked")
 	public static void useQueryRunner() throws SQLException {
 		// 第一种，使用Connection，需要手工关闭connection
 		QueryRunner qr1 = new QueryRunner();
 		Connection conn = DB.getConnection();
-		ArrayList result1 = (ArrayList) qr1.query(conn,
+		ArrayList<?> result1 = (ArrayList<?>) qr1.query(conn,
 				"select * from person", new ArrayListHandler());
 		DB.close(conn);
 		System.out.println(result1.size());
 
 		// 第二种，使用DataSource
 		QueryRunner qr2 = new QueryRunner(DB.getDataSource());
-		ArrayList result2 = (ArrayList) qr2.query("select * from person",
+		ArrayList<?> result2 = (ArrayList<?>) qr2.query("select * from person",
 				new ArrayListHandler());
 		System.out.println(result2.size());
 	}

@@ -17,3 +17,8 @@ apache DBCP和Pool
 有2个地方需要注意一下：
 1）数据库和表必须确认是哪种编码，一般选utf8编码
 2）数据库链接url加上：?useUnicode=true&characterEncoding=utf8
+
+
+2014年12月2日 17:07:08
+dbutils是非常不错的设计，现在spring jdbcTemplate和dbutils的用法非常相似。
+所以如果结合了spring的话就用spring jdbcTemplate就行。
