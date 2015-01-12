@@ -18,10 +18,10 @@ public @interface MyAnnotation {
 	// 下面是注解的参数
 	// 包括：所有基本类型、String、Class、enum、Annotation、以上类型的数组形式。
 	
-	public String name() default "";
+	String name() default "";
 	
-	public int age() default 0;
+	int age() default 0;
 	
-	public String[] interest() default {"math", "music"};
+	String[] interest() default {"math", "music"};
 	
 }
