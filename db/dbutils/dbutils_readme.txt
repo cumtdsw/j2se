@@ -22,3 +22,7 @@ apache DBCP和Pool
 2014年12月2日 17:07:08
 dbutils是非常不错的设计，现在spring jdbcTemplate和dbutils的用法非常相似。
 所以如果结合了spring的话就用spring jdbcTemplate就行。
+
+2015年1月19日 11:38:51
+dbutils对自定义列名的映射封装的没有spring jdbcTemplate直观。
+就目前来看，数据库的字段名最好和java的字段名一样。但这样不够友好。
