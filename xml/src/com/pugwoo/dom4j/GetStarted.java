@@ -3,21 +3,21 @@ package com.pugwoo.dom4j;
 import java.io.IOException;
 import java.util.Iterator;
 
-import junit.framework.TestCase;
-
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.dom4j.Node;
+import org.junit.Test;
 
-public class GetStarted extends TestCase {
+public class GetStarted {
 
 	/**
 	 * 解析XML
 	 * 
 	 * @throws DocumentException
 	 */
+	@Test
 	public void parseXML() throws DocumentException {
 		// 获得Document对象
 		Document document = Utils.getDocument("/myxml.xml");
@@ -37,7 +37,7 @@ public class GetStarted extends TestCase {
 		System.out.println("通过ID获得：" + book1_name.getUniquePath());
 		// 4.通过当前Element元素遍历其子元素
 		System.out.print("遍历当前元素的子元素:");
-		for (Iterator iter = root.elementIterator(); iter.hasNext();) {
+		for (Iterator<?> iter = root.elementIterator(); iter.hasNext();) {
 			Element element = (Element) iter.next();
 			System.out.print(element.getName() + " ");
 		}
