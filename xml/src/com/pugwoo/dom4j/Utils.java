@@ -1,5 +1,6 @@
 package com.pugwoo.dom4j;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,6 +29,11 @@ public class Utils {
 		InputStream input = Class.class.getResourceAsStream(path);
 		// 将xml文档转换为Document的对象
 		return reader.read(input);
+	}
+	
+	public static Document getDocumentFromString(String str) throws DocumentException {
+		SAXReader reader = new SAXReader();
+		return reader.read(new ByteArrayInputStream(str.getBytes()));
 	}
 
 	/**
