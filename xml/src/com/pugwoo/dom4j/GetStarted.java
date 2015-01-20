@@ -29,12 +29,15 @@ public class GetStarted {
 		// 1.通过Document对象获得根节点
 		Element root = document.getRootElement();
 		System.out.println("根节点名称:" + root.getName());
+		
 		// 2.通过当前Element的子元素的名称获得Element
 		Element book1 = root.element("book");
 		System.out.println("通过子节点的Tag名获得：" + book1.getUniquePath());
+		
 		// 3.通过ID获得Element，注意ID必须是大写的
 		Element book1_name = document.elementByID("boo1_name");
 		System.out.println("通过ID获得：" + book1_name.getUniquePath());
+		
 		// 4.通过当前Element元素遍历其子元素
 		System.out.print("遍历当前元素的子元素:");
 		for (Iterator<?> iter = root.elementIterator(); iter.hasNext();) {
@@ -67,17 +70,16 @@ public class GetStarted {
 	 * 将Document对象写入到XML文件中
 	 * @throws IOException
 	 */
+	@Test
 	public void writeXML() throws IOException {
 		// 新建Document
 		Document document = DocumentHelper.createDocument();
 		// 创建Root结点
 		Element root = document.addElement("root");
 
-		@SuppressWarnings("unused")
-		Element element1 = root.addElement("user").addAttribute("name",
-				"Alexander")
-				.addAttribute("blog", "http://www.pugwoo.com").addText(
-						"我是中文的名字");
+		root.addElement("user").addAttribute("name", "Alexander")
+				.addAttribute("blog", "http://www.pugwoo.com")
+				.addText("我是中文的名字");
 		
 		// 这个位置不知道怎么设置到classpath下
 		Utils.writeDocument(document, "test1.xml");

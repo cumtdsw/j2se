@@ -48,13 +48,13 @@ public class Utils {
 
 	/**
 	 * 打印document 一个Document表示一份xml文档
+	 * 此时相当于以原本xml格式显示
 	 */
 	public static void print(Document document) {
 		// 以XML格式输出Document
 		println("-----------Document As XML------------");
 		println(document.asXML());
 		println("--------------------------------------");
-
 	}
 
 	/**
