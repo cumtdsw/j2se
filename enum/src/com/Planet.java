@@ -11,7 +11,9 @@ public enum Planet {
 	VENUS(4.869e24, 6.052e6),
 	EARTH(5.975e24, 6.378e6); // 下面的省略了
 	
+	@SuppressWarnings("unused")
 	private final double mass; // 质量 kg
+	@SuppressWarnings("unused")
 	private final double radius; // 半径 米
 	private final double surfaceGravity; // m / s^2
 	
