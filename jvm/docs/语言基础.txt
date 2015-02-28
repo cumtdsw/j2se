@@ -1,2 +1,6 @@
-switch的值只支持int及以下的类型，和enum类型。
+>> switch的值只支持int及以下的类型，和enum类型。
+
+>> 注意byte是有符号类型，而char是无符号类型(仅有的)，所以:
+(int)(byte)-1是-1，而(int)(char)-1是65535
+但是(short)(char)-1又是-1了，原因是short和char长度引用，直接由char无符号转成short有符号
 
