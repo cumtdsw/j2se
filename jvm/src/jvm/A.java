@@ -13,5 +13,7 @@ public class A {
 		System.out.println(clazz.getCanonicalName()); // 无法newInstance,因为它是基本类型
 		
 		System.out.println(clazz instanceof Object);
+		
+		System.out.println(i);
 	}
 }

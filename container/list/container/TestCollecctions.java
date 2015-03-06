@@ -1,6 +1,5 @@
 package container;
 
-import java.util.AbstractCollection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class TestCollecctions {
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static void main(String[] args) {
 		
 		List<Map> list = new ArrayList<Map>();
