@@ -2,4 +2,9 @@ def hello() {
     System.out.println("Hello!");
 }
 
-hello()
+hello();
+
+str="h
+mvel是支持直接换行的";
+
+System.out.println(str)
