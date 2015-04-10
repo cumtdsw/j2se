@@ -14,7 +14,7 @@ public class Script {
 	public static void main(String[] args) throws IOException {
 		VariableResolverFactory vars = new MapVariableResolverFactory();
 		
-		String resourceFile = "/scripts/hello.mvel";
+		String resourceFile = "/scripts/fquicksort.mvel";
 		InputStream in = Script.class.getResourceAsStream(resourceFile);
 		
 		String fileContent = readAsReader(in);
