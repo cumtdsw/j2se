@@ -34,6 +34,13 @@ public class Basic {
 		
 		System.out.println(MVEL.eval("id * age", student)); // 计算
 		
+		// mvel本身就支持OGNL的方式拿属性，a.b实际上就是取a.getB()
+		
+		// 在mvel中，字符串可以用'，也可以用"括起来，用+号连接，字符串的比较用==
+		
+		System.out.println(MVEL.eval("Long.valueOf('3')"));
+		
+		System.out.println(MVEL.eval("true ? 1 : 2"));
 	}
 	
 }
