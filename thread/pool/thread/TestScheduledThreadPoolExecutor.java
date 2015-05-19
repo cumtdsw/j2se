@@ -6,6 +6,14 @@ package thread;
  * http://wangxue.iteye.com/blog/1759836
  * 
  * 优先使用ScheduledThreadPoolExecutor，相对于Timer
+ * 
+ * 这个建议来自于Java Concurrency in Practice:
+ * 这里也有人提及：http://stackoverflow.com/questions/409932/java-timer-vs-executorservice
+ * 主要原因：
+ * 1. Timer受系统时间变动的影响，而ScheduledThreadPoolExecutor不会（我反而觉得这是优势）
+ * 2. Timer是单线程，跑得太久影响后面调度，如果抛RuntimeException则Timer就挂了
+ * 
+ * 当然，Timer更加轻量级。
  */
 import java.text.SimpleDateFormat;
 import java.util.Date;
