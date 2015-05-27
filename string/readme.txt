@@ -12,3 +12,7 @@ StringBuilder 线程不安全【更快】
 
 关于Java中的字符编码：写得很好
 http://www.ibm.com/developerworks/cn/java/j-lo-chinesecoding/
+
+========================================
+关于字符串的操作，在实际项目中，经常用apache commons对字符串的工具类StringUtils
+详见j2se/apache_commons项目
