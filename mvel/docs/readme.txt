@@ -10,3 +10,7 @@ MVEL还可以在shell命令行执行：jar -jar mvel2-**.jar  执行的是org.mv
 ====
 大家选择mvel的原因是它只有900k，不依赖于其它任何jar包
 所以mvel可以用来做非常动态的事情
+
+mvel操作符：http://mvel.codehaus.org/MVEL+2.0+Operators
+判断一个变量是否存在：isdef a
+

@@ -1,0 +1,18 @@
+2015年5月31日 16:36:46
+beanshell应该是和mvel最为接近的一个。
+http://www.beanshell.org/manual/bshmanual.html
+
+从更新时间上看，maven上beanshell更新到2005年就不再更新了。
+最新的release版是2003年8月，1.3。
+
+从设计上beanshell是前辈，
+包括imports，可以和java几乎动态支持。
+
+同时自定义函数功能也很强大， 有变量闭包支持。
+
+例如判断一个变量是否存在
+支持shell交互方式等等
+动态加载类、加载包，重现加载，addClass
+内置不少操作命令
+
+可以beanshell不再更新了，很难在实际项目中去采用一个10年前的产品。
