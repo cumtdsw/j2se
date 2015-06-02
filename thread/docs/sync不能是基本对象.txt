@@ -1,0 +1,10 @@
+2015年6月2日 17:44:00
+
+synchronized的东西一定是【对象】，准确说是当前对象的引用地址。
+
+所以method方法块上的synchronized是当前对象的地址。
+
+而Integer这些immutable的对象，当变量i的值修改时，实际上是改变了对象的应用地址。
+所以sync就失效了
+
+http://stackoverflow.com/questions/16280699/synchronized-block-for-an-integer-object
