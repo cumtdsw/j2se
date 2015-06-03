@@ -24,6 +24,15 @@ public class TestTransform {
 				}).toList();
 		
 		System.out.println(transformedList);
+		
+		// 这个更简单一点可以直接从Lists.transform直接转
+		transformedList = Lists.transform(ages, new Function<Integer, String>() {
+			@Override
+			public String apply(Integer input) {
+				return "aaa" + input;
+			}
+		});
+		System.out.println(transformedList);
 	}
 
 }
