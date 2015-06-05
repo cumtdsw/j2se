@@ -19,6 +19,13 @@ public class Variables {
 		MVEL.eval("a=3", vars);
 		MVEL.eval("System.out.println(a)", vars);
 		
+		// 关于类型定义变量的有个特点，可以不指定类型
+		// 但是如果指定了类型，那么一次就定义一次，否则就报错了，例如String str = "hi"; 执行两遍就出错
+		// 所以这个可以看项目对类型的要求高不高来定，也非常合理
+		
+		// 还可以直接把数字通过(String)的方式转换
+		MVEL.eval("a=(String) 3", vars);
+		System.out.println(MVEL.eval("a.class", vars));
 	}
 	
 }

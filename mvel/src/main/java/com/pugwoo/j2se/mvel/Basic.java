@@ -41,6 +41,22 @@ public class Basic {
 		System.out.println(MVEL.eval("Long.valueOf('3')"));
 		
 		System.out.println(MVEL.eval("true ? 1 : 2"));
+		
+		// 2015年6月5日 11:28:23
+		// mvel 支持多个表达式用分号;隔开，并将最后一个表达式的返回值作为最终返回值
+		System.out.println(MVEL.eval("1;2;3")); //返回3
+		
+		// 关于比较符==，它会将所有object都转换成String然后比较equals
+		System.out.println(MVEL.eval("1=='1'")); // 返回true
+		
+		// null-safe，更安全的获取属性   .?  就是加多一个问号
+		System.out.println(MVEL.eval("name.?length", student));
+		
+		// 关于字符串，用""或''都是一样的，\n表示回车符 \r是Return
+		
+		// 关于数字，后缀d是double，f是float，【B是BigDecimal，I是BigInteger】
+		
+		
 	}
 	
 }
