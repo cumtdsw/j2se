@@ -38,3 +38,6 @@ mvel支持定义函数，def,这个功能非常实用也非常重要
 
 mvel可以在context那里import，这里的好处可以重命名import的类名。
 当然直接script中import XXX;也是可以的。
+但是script不支持static import，只能在代码里import静态方法或变量，很实用：
+http://stackoverflow.com/questions/4349519/cant-import-static-method-using-mvel
+
