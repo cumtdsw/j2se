@@ -6,6 +6,8 @@ import com.google.common.base.Strings;
 public class TestStringUtils {
 
 	public static void main(String[] args) {
+		
+		System.out.println(Strings.isNullOrEmpty(" ")); // isNullOrEmpty这个判断不了blank
 
 		String str = Strings.padEnd("4.", 4, '0');
 		System.out.println(str); // 4.00
