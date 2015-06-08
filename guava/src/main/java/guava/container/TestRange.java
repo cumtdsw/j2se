@@ -14,5 +14,7 @@ public class TestRange {
 		//both return false meaning exclusive
 		numberRange.contains(10);
 		numberRange.contains(1);
+		
+		// 放range的容器RangeSet，会自动合并区间
 	}
 }
