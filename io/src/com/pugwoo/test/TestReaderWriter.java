@@ -16,10 +16,10 @@ import junit.framework.TestCase;
 public class TestReaderWriter extends TestCase {
 
 	public void testFileReader() throws IOException {
-		// 可以直接从文件获得FileReader对象
+		// 可以直接从文件获得FileReader对象，readme.txt是project的根目录下的
 		FileReader fileReader = new FileReader("readme.txt");
 
-		// 读取一个字符，16字节
+		// 读取一个字符，默认是utf-8编码，可能读取1个字节，也可能读取3个字节
 		int ch = fileReader.read();
 		System.out.println(ch);
 		System.out.println((char) ch);
