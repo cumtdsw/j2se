@@ -2,8 +2,6 @@ package com.pugwoo;
 
 import junit.framework.TestCase;
 
-import com.pugwoo.sshx.core.ExpectClient;
-
 public class ExpectClientTest extends TestCase {
 
 	public void testExecute() throws Exception {
