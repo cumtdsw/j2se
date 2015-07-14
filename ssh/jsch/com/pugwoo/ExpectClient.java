@@ -184,6 +184,7 @@ public class ExpectClient {
 				// 通过判断pattern来确定输入，如果在用户自定义的输入中
 				String pattern = expect.getLastState().getMatch();
 
+				// 遍历用户自定义expect，isPrompt为true则系统提示输入
 				boolean isPrompt = true;
 				for (String key : matchInput.keySet()) {
 					if (Pattern.compile(key).matcher(pattern).find()) {
@@ -197,9 +198,26 @@ public class ExpectClient {
 				if (isPrompt) {
 					readyToInput = true;
 					// 把outbuf最后的输入提示去掉
-					if (hasExecuted)
-						outbuf.delete(outbuf.length() - pattern.length(),
-								outbuf.length());
+					if (hasExecuted) {
+						// 有且只有一个linux prompt regex匹配到，且这个regex只匹配到一个
+						for(String linuxPrompt : linuxPromptRegEx) {
+							Pattern p = Pattern.compile(linuxPrompt);
+							java.util.regex.Matcher matcher = p.matcher(pattern);
+							int startIndex = -1;
+							int endIndex = -1;
+							while(matcher.find()) {
+								startIndex = matcher.start();
+								endIndex = matcher.end();
+							}
+							// 只处理最后一个匹配到的位置
+							if (startIndex != -1 && endIndex != -1) {
+								int outbufLength = outbuf.length();
+								outbuf.delete(outbufLength
+										- (endIndex - startIndex + 1), outbufLength);
+								break;
+							}
+						}
+					}
 				}
 			} else {
 				if (hasExecuted) {
@@ -212,7 +230,15 @@ public class ExpectClient {
 				}
 			}
 		}
-		return outbuf.toString();
+		
+		// 去掉outbuf第一行的命令
+		String cmdEnter = cmd + ENTER_CHARACTER;
+		if(outbuf.toString().startsWith(cmdEnter)) {
+			outbuf.delete(0, cmdEnter.length() + 1);
+		}
+		
+		String result = outbuf.toString();
+		return RemoveSpecialChar.process(result); // 去掉颜色的特殊字符
 	}
 
 	public void closeConnection() {

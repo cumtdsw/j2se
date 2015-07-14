@@ -2,8 +2,18 @@ package com.pugwoo;
 
 import junit.framework.TestCase;
 
+import com.pugwoo.sshx.core.ExpectClient;
+
 public class ExpectClientTest extends TestCase {
 
+	public void testExecute() throws Exception {
+		ExpectClient expectClient = new ExpectClient("192.168.56.101", 22,
+				"root", "123456");
+		String cmd = "echo hi > a.txt";
+		String result = expectClient.execute(cmd);
+		System.out.println(result);
+	}
+	
 	/**
 	 * 显示远程机器的内存的使用百分比
 	 */
