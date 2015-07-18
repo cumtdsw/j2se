@@ -1,4 +1,4 @@
-package container.queue.test;
+package queue;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;

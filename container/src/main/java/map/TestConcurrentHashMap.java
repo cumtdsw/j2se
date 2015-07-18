@@ -1,4 +1,4 @@
-package com.pugwoo.test;
+package map;
 
 import java.util.concurrent.ConcurrentHashMap;
 
