@@ -41,6 +41,7 @@ public class EasyRunTask {
 		sb.append("processed:").append(processed).append(",");
 		sb.append("success:").append(success).append(",");
 		sb.append("fail:").append(fail).append(",");
+		sb.append("exceptions:").append(exceptions.size());
 		return sb.toString();
 	}
 	
@@ -59,12 +60,6 @@ public class EasyRunTask {
 			return new TaskResult(false, "thread is running");
 		}
 		
-		total = 0;
-		processed = 0;
-		success = 0;
-		fail = 0;
-		exceptions.clear();
-		
 		thread = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -75,7 +70,13 @@ public class EasyRunTask {
 							return;
 						}
 					}
-					int restCount = task.getRestCount();
+					int restCount = 0;
+					try {
+						restCount = task.getRestCount();
+					} catch (Exception e) {
+						exceptions.add(e);
+					}
+
 					if(restCount <= 0) {
 						synchronized (status) {
 							status = StatusEnum.FINISHED;
@@ -101,6 +102,11 @@ public class EasyRunTask {
 		});
 		
 		task.reset();
+		total = 0;
+		processed = 0;
+		success = 0;
+		fail = 0;
+		exceptions.clear();
 		status = StatusEnum.RUNNING;
 		thread.start();
 		
