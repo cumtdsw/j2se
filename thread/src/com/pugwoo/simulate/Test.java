@@ -1,7 +1,5 @@
 package com.pugwoo.simulate;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Test {
 
@@ -12,7 +10,6 @@ public class Test {
 		final Computer computers[] = new Computer[10];
 		for (int i = 0; i < computers.length; i++) {
 			computers[i] = new Computer("c" + i, i) {
-				protected List<Integer> hosts = new ArrayList<Integer>();
 				@Override
 				protected void handle(Object message) {
 					if(this.getIp() == 0)
