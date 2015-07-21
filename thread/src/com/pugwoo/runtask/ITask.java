@@ -17,4 +17,8 @@ public interface ITask {
 	 */
 	TaskResult runStep();
 	
+	/**
+	 * 初始化Task，使得重跑时可以正常执行，这个方法会在每次start时调用
+	 */
+	void reset();
 }

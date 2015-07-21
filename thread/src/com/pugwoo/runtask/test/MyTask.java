@@ -10,7 +10,14 @@ public class MyTask implements ITask {
 	
 	private List<Long> tasks;
 	
+	private int size;
+	
 	public MyTask(int size) {
+		this.size = size;
+	}
+	
+	@Override
+	public void reset() {
 		tasks = new ArrayList<Long>(size);
 		for(int i = 0; i < size; i++) {
 			tasks.add((long)i);

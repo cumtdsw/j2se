@@ -32,6 +32,18 @@ public class EasyRunTask {
 		this.task = task;
 	}
 	
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("task:").append(task == null ? "null" : task.getClass().getName()).append(",");
+		sb.append("status:").append(status).append(",");
+		sb.append("total:").append(total).append(",");
+		sb.append("processed:").append(processed).append(",");
+		sb.append("success:").append(success).append(",");
+		sb.append("fail:").append(fail).append(",");
+		return sb.toString();
+	}
+	
 	/**
 	 * 启动任务
 	 * @return
@@ -88,6 +100,7 @@ public class EasyRunTask {
 			}
 		});
 		
+		task.reset();
 		status = StatusEnum.RUNNING;
 		thread.start();
 		
