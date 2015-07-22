@@ -37,6 +37,7 @@ public class MyTask implements ITask {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		System.out.println("running task " + id);
 		return new TaskResult(true, "finish " + id);
 	}
 

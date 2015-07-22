@@ -13,12 +13,7 @@ public class Main {
 		TaskResult result = easyRunTask.start();
 		System.out.println("result:" + result.isSuccess() + ",msg:" + result.getMessage());
 		
-		
-		System.out.println("total:" + easyRunTask.getTotal()
-				+ ",processed:" + easyRunTask.getProcessed()
-				+ ",success:" + easyRunTask.getSuccess()
-				+ ",fail:" + easyRunTask.getFail());
-		System.out.println("status:" + easyRunTask.getStatus());
+		waitAndPrint(0, easyRunTask);
 		
 		result = easyRunTask.start();
 		System.out.println("result:" + result.isSuccess() + ",msg:" + result.getMessage());
@@ -26,7 +21,9 @@ public class Main {
 		waitAndPrint(1000, easyRunTask);
 		
 		easyRunTask.stop();
+		waitAndPrint(1000, easyRunTask);
 		
+		easyRunTask.resume();
 		waitAndPrint(1000, easyRunTask);
 	}
 	
