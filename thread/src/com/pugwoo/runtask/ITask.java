@@ -19,6 +19,7 @@ public interface ITask {
 	
 	/**
 	 * 初始化Task，使得重跑时可以正常执行，这个方法会在每次start时调用
+	 * 如果是resume调用则不掉这个接口
 	 */
 	void reset();
 }

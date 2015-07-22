@@ -50,6 +50,18 @@ public class EasyRunTask {
 	 * @return
 	 */
 	public synchronized TaskResult start() {
+		return run(true);
+	}
+	
+	/**
+	 * 停止之后恢复任务
+	 * @return
+	 */
+	public synchronized TaskResult resume() {
+		return run(false);
+	}
+
+	private synchronized TaskResult run(boolean reset) {
 		if(status == StatusEnum.RUNNING || status == StatusEnum.STOPPING) {
 			return new TaskResult(false, "cannot start when running");
 		}
@@ -101,12 +113,15 @@ public class EasyRunTask {
 			}
 		});
 		
-		task.reset();
-		total = 0;
-		processed = 0;
-		success = 0;
-		fail = 0;
-		exceptions.clear();
+		if(reset) {
+			task.reset();
+			total = 0;
+			processed = 0;
+			success = 0;
+			fail = 0;
+			exceptions.clear();
+		}
+
 		status = StatusEnum.RUNNING;
 		thread.start();
 		
