@@ -2,7 +2,6 @@ package thread;
 
 import java.util.Random;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -18,13 +17,17 @@ import java.util.concurrent.Future;
 public class CallableThreadPool {
 
 	public static void main(String[] args) {
-        ExecutorService threadPool = Executors.newSingleThreadExecutor();  
+        ExecutorService threadPool = Executors.newSingleThreadExecutor(); 
+        
         // 提交给线程池去执行
         Future<Integer> future = threadPool.submit(new Callable<Integer>() {  
             public Integer call() throws Exception {  
                 return new Random().nextInt(100);  
-            }  
+            }
         });
+        
+        threadPool.shutdown();
+        System.out.println("pool shutdown called");
         
         // 异步等待，处理线程返回结果
         try {  
@@ -33,9 +36,6 @@ public class CallableThreadPool {
         } catch (Exception e) {  
             e.printStackTrace();  
         }
-        
-        threadPool.shutdown();
-
 	}
 
 }
