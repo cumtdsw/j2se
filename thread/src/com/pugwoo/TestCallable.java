@@ -18,7 +18,8 @@ public class TestCallable {
 	public static void main(String[] args) {
 
 		Callable<Integer> callable = new Callable<Integer>() {  
-            public Integer call() throws Exception {  
+            public Integer call() throws Exception {
+            	Thread.sleep(3000);
                 return new Random().nextInt(100);  
             }  
         };  
@@ -28,7 +29,7 @@ public class TestCallable {
         new Thread(future).start();  
         try {  
             Thread.sleep(1000);// 可能做一些事情  
-            System.out.println(future.get());  
+            System.out.println(future.get());  // get是阻塞接口 
         } catch (InterruptedException e) {  
             e.printStackTrace();  
         } catch (ExecutionException e) {  

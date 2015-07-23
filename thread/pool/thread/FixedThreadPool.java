@@ -53,7 +53,23 @@ public class FixedThreadPool {
 				Thread.sleep(2000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
+				System.err.println("中断的id:" + id);
 			}
+			
+			/**
+			 * 事实上，关于一条线程的结束，实际上service.shutdownNow()
+			 * 也只是对每一条线程执行interupt，并无法强制结束流程
+			 */
+//			boolean is = true;
+//			while(is) {
+//				System.err.println("still alive:" + id);
+//				try {
+//					Thread.sleep(1000);
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//					System.err.println("中断的id:" + id);
+//				}
+//			}
 			System.out.println(id + "执行完毕。");
 		}
 

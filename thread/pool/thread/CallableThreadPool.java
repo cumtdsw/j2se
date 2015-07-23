@@ -32,7 +32,7 @@ public class CallableThreadPool {
         // 异步等待，处理线程返回结果
         try {  
             Thread.sleep(1000);// 可能做一些事情  
-            System.out.println(future.get());  
+            System.out.println(future.get());  // 阻塞
         } catch (Exception e) {  
             e.printStackTrace();  
         }
