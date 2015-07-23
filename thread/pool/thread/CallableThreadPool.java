@@ -1,4 +1,4 @@
-package com.pugwoo;
+package thread;
 
 import java.util.Random;
 import java.util.concurrent.Callable;
@@ -15,7 +15,7 @@ import java.util.concurrent.Future;
  * 
  * 参考：http://blog.csdn.net/ghsau/article/details/7451464
  */
-public class TestCallable2 {
+public class CallableThreadPool {
 
 	public static void main(String[] args) {
         ExecutorService threadPool = Executors.newSingleThreadExecutor();  
@@ -30,9 +30,7 @@ public class TestCallable2 {
         try {  
             Thread.sleep(1000);// 可能做一些事情  
             System.out.println(future.get());  
-        } catch (InterruptedException e) {  
-            e.printStackTrace();  
-        } catch (ExecutionException e) {  
+        } catch (Exception e) {  
             e.printStackTrace();  
         }
         
