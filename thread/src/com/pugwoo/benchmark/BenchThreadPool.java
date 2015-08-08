@@ -1,8 +1,10 @@
-package com.pugwoo;
+package com.pugwoo.benchmark;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+
+import com.pugwoo.CountTime;
 
 /**
  * 用于测试指定固定线程池且队列限长的threadPool的性能
@@ -13,6 +15,8 @@ import java.util.concurrent.TimeUnit;
  * 而线程池大小为1000，队列长度为10000时，需要40s才能完成
  * 
  * 线程池大小实际上是和执行任务的CPU和IO等待占比相关的。
+ * 
+ * 在2015年主流笔记本上，1kw任务，进程池大小100，队列长度1000时，8s完成
  */
 public class BenchThreadPool {
 
@@ -43,7 +47,7 @@ public class BenchThreadPool {
 		
 
 		for (int i = 0; i < threadNum; i++) {
-			final int fi = i;
+//			final int fi = i;
 			executor.execute(new Runnable() {
 				@Override
 				public void run() {

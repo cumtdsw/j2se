@@ -1,0 +1,20 @@
+2015年7月23日 10:08:34
+
+1. 单线程线程池
+ExecutorService threadPool = Executors.newSingleThreadExecutor();
+只有一个线程，保证任务按顺序执行，同一时刻最多只有一个任务执行。
+如果一个任务执行过程抛出异常导致线程结束，那么会起一个新的线程执行接下来的任务。
+这个线程池和newFixedThreadPool(1)不同的时，这个线程池没有办法修改线程数量。
+
+2. 固定线程池
+ExecutorService service = Executors.newFixedThreadPool(3);
+任务队列无限长，也就是同一时刻，最多有固定n个线程同时跑。如果一个线程挂了，那么会起一个新的线程来代替。
+
+
+==========================常用方法======================================
+1. executorService.submit(Callable) -> Future
+提交Callable任务
+
+2. executorService.shutdown()
+这个方法不是阻塞的，从效果上看，它只是不允许新的任务添加进来，线程池会继续执行完所有任务再结束。
+

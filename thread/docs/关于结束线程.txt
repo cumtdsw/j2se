@@ -1,0 +1,16 @@
+2015年7月23日 17:03:53
+
+1. 如果是像操作系统一样强制结束掉一个线程的运行，
+那么调用thread.stop()可以做到，缺点是这样比较暴力，一般情况不建议使用
+除非自己清楚这样强制结束的影响范围
+
+2. 调用线程的thread.interrupt()方法，它会向“阻塞”的线程发送一个信号，具体如下：
+Interrupts this thread. 
+Unless the current thread is interrupting itself, which is always permitted, the checkAccess method of this thread is invoked, which may cause a SecurityException to be thrown. 
+If this thread is blocked in an invocation of the wait(), wait(long), or wait(long, int) methods of the Object class, or of the join(), join(long), join(long, int), sleep(long), or sleep(long, int), methods of this class, then its interrupt status will be cleared and it will receive an InterruptedException. 
+If this thread is blocked in an I/O operation upon an interruptible channel then the channel will be closed, the thread's interrupt status will be set, and the thread will receive a ClosedByInterruptException. 
+If this thread is blocked in a Selector then the thread's interrupt status will be set and it will return immediately from the selection operation, possibly with a non-zero value, just as if the selector's wakeup method were invoked. 
+If none of the previous conditions hold then this thread's interrupt status will be set. 
+Interrupting a thread that is not alive need not have any effect.
+
+3. 设置一个结束flag之类的，然后由另外一个线程设置，当前线程不断去检测flag标记，自己控制自己结束。

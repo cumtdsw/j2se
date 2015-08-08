@@ -1,8 +1,7 @@
-package com.pugwoo;
+package thread;
 
 import java.util.Random;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -15,29 +14,28 @@ import java.util.concurrent.Future;
  * 
  * 参考：http://blog.csdn.net/ghsau/article/details/7451464
  */
-public class TestCallable2 {
+public class CallableThreadPool {
 
 	public static void main(String[] args) {
-        ExecutorService threadPool = Executors.newSingleThreadExecutor();  
+        ExecutorService threadPool = Executors.newSingleThreadExecutor(); 
+        
         // 提交给线程池去执行
         Future<Integer> future = threadPool.submit(new Callable<Integer>() {  
             public Integer call() throws Exception {  
                 return new Random().nextInt(100);  
-            }  
+            }
         });
+        
+        threadPool.shutdown();
+        System.out.println("pool shutdown called");
         
         // 异步等待，处理线程返回结果
         try {  
             Thread.sleep(1000);// 可能做一些事情  
-            System.out.println(future.get());  
-        } catch (InterruptedException e) {  
-            e.printStackTrace();  
-        } catch (ExecutionException e) {  
+            System.out.println(future.get());  // 阻塞
+        } catch (Exception e) {  
             e.printStackTrace();  
         }
-        
-        threadPool.shutdown();
-
 	}
 
 }
