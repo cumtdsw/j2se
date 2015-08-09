@@ -11,3 +11,10 @@ Log4j的主要有三个组成部分：
 loggers: 负责捕获日志信息。
 appenders : 负责发布日志信息记录到不同的首选目的地。
 layouts: 负责以不同的风格格式化日志信息。
+
+2015年8月8日 20:04:01
+当配置文件不存在时，ConsoleAppender会attached到root logger.
+ConsoleAppender的pattern设置为"%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
+
+log4j 2.x 不再支持.properties的文件配置方式，推荐用xml
+
