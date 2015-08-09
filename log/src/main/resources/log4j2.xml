@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="WARN">
+<Configuration status="WARN"> <!-- monitorInterval="30" 属性可以动态30秒检查配置修改 -->
   <Appenders>
     <Console name="Console" target="SYSTEM_OUT">
       <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
     </Console>
   </Appenders>
-  <Loggers>
-    <Root level="debug">
+  <Loggers> <!-- 经过实验，Loggers里的元素没有顺序关联 -->
+    <Root level="ERROR">
       <AppenderRef ref="Console"/>
     </Root>
+
+    <!-- com.pugwoo包log级别设置为TRACE -->
+    <Logger name="com.pugwoo" level="TRACE">
+<!-- <AppenderRef ref="Console"/> 如果指定这个，会使得消息打印两遍，要么Logger加上additivity="false"-->
+    </Logger>
+    
   </Loggers>
 </Configuration>
