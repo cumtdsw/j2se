@@ -20,6 +20,12 @@ public class GetStarted {
 		logger.fatal("Fatal Message!");
 		
 		logger.error("hello:{}", "world");
+		
+		try {
+			throw new Exception("test ex");
+		} catch (Exception e) {
+			logger.error("err happen", e); // 千万不要这么写：logger.error(e); 这样只是打印出e.toString()
+		}
 	}
 
 }
