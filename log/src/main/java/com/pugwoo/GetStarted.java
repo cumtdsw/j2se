@@ -26,6 +26,13 @@ public class GetStarted {
 		} catch (Exception e) {
 			logger.error("err happen", e); // 千万不要这么写：logger.error(e); 这样只是打印出e.toString()
 		}
+		
+		try {
+			throw new Exception("test ex2");
+		} catch (Exception e) {
+			// 【重要】logger约定了最后一个参数如果是exception，则打印堆栈
+			logger.error("one:{},two:{},three:{}",1,2,3,e); 
+		}
 	}
 
 }

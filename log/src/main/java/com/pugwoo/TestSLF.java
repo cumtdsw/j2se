@@ -15,6 +15,13 @@ public class TestSLF {
 		LOGGER.info("hello {}", "nick");
 		// 高版本的slf支持多个参数
 		LOGGER.warn("{} + {} = {}", 1, 2, 3);
+		
+		try {
+			throw new Exception("test ex2");
+		} catch (Exception e) {
+			// 【重要】logger约定了最后一个参数如果是exception，则打印堆栈
+			LOGGER.error("one:{},two:{},three:{}",1,2,3,e); 
+		}
 	}
 	
 }
