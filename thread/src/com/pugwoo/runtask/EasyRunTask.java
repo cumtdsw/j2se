@@ -16,7 +16,7 @@ public class EasyRunTask {
 	// 执行任务的线程
 	private Thread thread; // 可以考虑用线程池
 	
-	private List<Exception> exceptions = new ArrayList<Exception>();
+	private List<Throwable> exceptions = new ArrayList<Throwable>();
 	private int total;
 	private int processed;
 	private int success;
@@ -85,7 +85,7 @@ public class EasyRunTask {
 					int restCount = 0;
 					try {
 						restCount = task.getRestCount();
-					} catch (Exception e) {
+					} catch (Throwable e) {
 						exceptions.add(e);
 					}
 
@@ -103,7 +103,7 @@ public class EasyRunTask {
 						} else {
 							success++;
 						}
-					} catch (Exception e) {
+					} catch (Throwable e) {
 						exceptions.add(e);
 						fail++;
 					} finally {
@@ -149,7 +149,7 @@ public class EasyRunTask {
 	public ITask getTask() {
 		return task;
 	}
-	public List<Exception> getExceptions() {
+	public List<Throwable> getExceptions() {
 		return exceptions;
 	}
 	/**
