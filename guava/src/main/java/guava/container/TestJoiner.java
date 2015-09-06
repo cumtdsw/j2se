@@ -1,4 +1,4 @@
-package guava.basic;
+package guava.container;
 
 import java.util.HashMap;
 import java.util.List;
