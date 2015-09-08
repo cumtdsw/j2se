@@ -43,3 +43,7 @@ synchronized(obj) {
 }
 
 ExecutorService提供线程池的服务
+
+2015年9月8日 17:08:06
+java里面封装了一些自身保证线程安全的对象，例如Concurrent容器、Atomic对象等
+使用这些对象可以让程序变得简单，推荐。
