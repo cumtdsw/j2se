@@ -41,3 +41,5 @@ mvel可以在context那里import，这里的好处可以重命名import的类名
 但是script不支持static import，只能在代码里import静态方法或变量，很实用：
 http://stackoverflow.com/questions/4349519/cant-import-static-method-using-mvel
 
+2015年9月11日 17:18:07
+在实际的开发中，mvel可以为java注入很多动态特性。在框架、组件的开发中，更是不可缺少mvel。
