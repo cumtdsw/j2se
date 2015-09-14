@@ -51,6 +51,9 @@ public class Basic {
 		Files.createParentDirs(file);
 		Files.write("test", file, Charsets.UTF_8);
 		// 注意，write会全量更新这个文件，如果要追加，则用append那个
+		
+		// 文件也可以写二进制byte[]
+		// Files.write(bytes, to);
 	}
 
 	@Test
