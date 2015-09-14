@@ -13,8 +13,7 @@ import com.google.common.io.Files;
 public class Basic {
 	
 	/**
-	 * 读取所有的行到文件中
-	 * @throws Exception
+	 * 实用：把文件中的文本并解析为行
 	 */
 	@Test
 	public void testReadLines() throws Exception {
@@ -27,6 +26,18 @@ public class Basic {
 		for(String line : lines) {
 			System.out.println(line);
 		}
+	}
+	
+	/**
+	 * 将文件所有内容读出来，放到byte[]中
+	 */
+	@Test
+	public void testReadBinary() throws Exception {
+		// 对于一个文件
+		byte[] bytes = Files.toByteArray(new File("C:/a.txt"));
+		System.out.println("read bytes:" + bytes.length);
+		// 对于输入流
+//		byte[] bytes = ByteStreams.toByteArray(in);
 	}
 	
 	/**
