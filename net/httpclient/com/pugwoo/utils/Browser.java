@@ -137,6 +137,7 @@ public class Browser {
 		Browser browser = new Browser().setProxyHttp("127.0.0.1", 8888);
 		
 		String url = "http://www.baidu.com/";
+		// 发现一个很强大的功能，如果网站302跳转，照样可以处理 XXX
 		HttpResponse content = browser.get(url);
 
 		System.out.println(content.content);
