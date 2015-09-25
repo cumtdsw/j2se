@@ -10,9 +10,12 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
 
 /**
@@ -56,9 +59,10 @@ public class Browser {
 	private boolean remainBytes;
 	/**重定向输出*/
 	private OutputStream outputStream;
+	/**忽略https证书验证，方便fiddler抓包测试*/
+	private boolean ignoreHttpsCertificates = false;
 	
 	private BasicCookieStore cookieStore = new BasicCookieStore();
-	private CloseableHttpClient httpClient = HttpClientBuilder.create().setDefaultCookieStore(cookieStore).build();
 	
 	public Browser setProxyHttp(String ip, int port) {
 		this.proxy = new HttpHost(ip, port, "http");
@@ -76,6 +80,10 @@ public class Browser {
 		this.outputStream = outputStream;
 		return this;
 	}
+	public Browser setIgnoreHttpsCertificates(boolean ignoreHttpsCertificates) {
+		this.ignoreHttpsCertificates = ignoreHttpsCertificates;
+		return this;
+	}
 	
 	/**
 	 * GET方式请求
@@ -87,6 +95,22 @@ public class Browser {
 		RequestConfig requestConfig = RequestConfig.custom()
 				.setSocketTimeout(60000).setConnectTimeout(60000)
 				.setConnectionRequestTimeout(60000).setProxy(proxy).build();
+		
+		HttpClientBuilder httpClientBuilder = HttpClientBuilder.create().
+				setDefaultCookieStore(cookieStore);
+		if(ignoreHttpsCertificates) {
+			try {
+				SSLContextBuilder builder = new SSLContextBuilder();
+			    builder.loadTrustMaterial(null, new TrustSelfSignedStrategy());
+			    SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
+			            builder.build());
+			    httpClientBuilder.setSSLSocketFactory(sslsf);
+			} catch (Exception e) {
+				// TODO log ex
+			}
+		}
+		
+		CloseableHttpClient httpClient = httpClientBuilder.build();
 		
 		CloseableHttpResponse response = null;
 		HttpResponse httpResponse = new HttpResponse();
@@ -135,6 +159,8 @@ public class Browser {
 	
 	public static void main(String[] args) throws IOException {
 		Browser browser = new Browser().setProxyHttp("127.0.0.1", 8888);
+		
+		browser.setIgnoreHttpsCertificates(true);
 		
 		String url = "http://www.baidu.com/";
 		// 发现一个很强大的功能，如果网站302跳转，照样可以处理 XXX
