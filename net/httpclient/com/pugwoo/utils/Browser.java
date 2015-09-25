@@ -2,25 +2,34 @@ package com.pugwoo.utils;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpHost;
+import org.apache.http.NameValuePair;
 import org.apache.http.StatusLine;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
 
 /**
- * 2015年9月24日 17:46:47
- * 基于http client的浏览器工具
+ * 2015年9月24日 17:46:47 基于http client的浏览器工具
+ * 2015年9月25日 14:20:34 增加ssl忽略设置
  * 
  * 历史log:
  * 2012-12-3 下午03:23:35 http get数据
@@ -34,7 +43,7 @@ import org.apache.http.util.EntityUtils;
 public class Browser {
 	
 	/**
-	 * http返回包
+	 * http返回报文
 	 */
 	public static class HttpResponse {
 		/**html状态*/
@@ -64,22 +73,33 @@ public class Browser {
 	
 	private BasicCookieStore cookieStore = new BasicCookieStore();
 	
+	/**设置http代理*/
 	public Browser setProxyHttp(String ip, int port) {
 		this.proxy = new HttpHost(ip, port, "http");
 	    return this;
 	}
+	/**清楚所有代理*/
+	public Browser clearProxy() {
+		this.proxy = null;
+		return this;
+	}
+	
+	/**设置解析返回报文编码*/
 	public Browser setEncode(String encode) {
 		this.encode = encode;
 		return this;
 	}
+	/**设置不解析报文，直接保留到byte[] contentBytes，适合于下载文件图片等*/
 	public Browser setRemainBytes(boolean remainBytes) {
 		this.remainBytes = remainBytes;
 		return this;
 	}
+	/**设置将报文直接写入到输出流*/
 	public Browser setOutputStream(OutputStream outputStream) {
 		this.outputStream = outputStream;
 		return this;
 	}
+	/**设置不要校验ssl证书*/
 	public Browser setIgnoreHttpsCertificates(boolean ignoreHttpsCertificates) {
 		this.ignoreHttpsCertificates = ignoreHttpsCertificates;
 		return this;
@@ -88,64 +108,17 @@ public class Browser {
 	/**
 	 * GET方式请求
 	 * @param url
-	 * @throws IOException 
 	 */
 	public HttpResponse get(String url) throws IOException {
-		// 配置超时时间和代理
-		RequestConfig requestConfig = RequestConfig.custom()
-				.setSocketTimeout(60000).setConnectTimeout(60000)
-				.setConnectionRequestTimeout(60000).setProxy(proxy).build();
-		
-		HttpClientBuilder httpClientBuilder = HttpClientBuilder.create().
-				setDefaultCookieStore(cookieStore);
-		if(ignoreHttpsCertificates) {
-			try {
-				SSLContextBuilder builder = new SSLContextBuilder();
-			    builder.loadTrustMaterial(null, new TrustSelfSignedStrategy());
-			    SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
-			            builder.build());
-			    httpClientBuilder.setSSLSocketFactory(sslsf);
-			} catch (Exception e) {
-				// TODO log ex
-			}
-		}
-		
-		CloseableHttpClient httpClient = httpClientBuilder.build();
-		
 		CloseableHttpResponse response = null;
 		HttpResponse httpResponse = new HttpResponse();
-
 		try {
 			HttpGet httpGet = new HttpGet(url);
-			httpGet.setConfig(requestConfig);
+			httpGet.setConfig(getRequestConfig());
 			httpGet.setHeader("User-Agent", USER_AGENT_CHROME_WIN7);
 
-			response = httpClient.execute(httpGet);
-
-			httpResponse.statusLine = response.getStatusLine();
-			httpResponse.headers = response.getAllHeaders();
-
-			HttpEntity entity = response.getEntity();
-			if(entity == null) {
-				throw new IOException("HttpEntity is null");
-			}
-			
-			if (outputStream != null) {
-				outputStream.write(EntityUtils.toByteArray(entity));
-			} else {
-				if(remainBytes) {
-					httpResponse.contentBytes = EntityUtils.toByteArray(entity);
-				} else {
-					if (encode == null) {
-						httpResponse.content = EntityUtils.toString(entity);
-					} else {
-						httpResponse.content = EntityUtils.toString(entity, encode);
-					}
-				}
-			}
-
-			// 当entity已经处理完了，关闭掉
-			EntityUtils.consume(entity);
+			response = getHttpClient().execute(httpGet);
+			processResp(response, httpResponse);
 		} finally {
 			// 建立的http连接，仍旧被response保持着，允许我们从网络socket中获取返回的数据
 			// 为了释放资源，我们必须手动消耗掉response或者取消连接（使用CloseableHttpResponse类的close方法）
@@ -157,19 +130,131 @@ public class Browser {
 		return httpResponse;
 	}
 	
+	/**
+	 * POST方式请求
+	 * @param url
+	 * @param params
+	 * @return
+	 */
+	public HttpResponse post(String url, Map<String, String> params) throws IOException {		
+		CloseableHttpResponse response = null;
+		HttpResponse httpResponse = new HttpResponse();
+		try {
+			HttpPost httpPost = new HttpPost(url);
+			httpPost.setConfig(getRequestConfig());
+			httpPost.setHeader("User-Agent", USER_AGENT_CHROME_WIN7);
+			
+			if(params != null && !params.isEmpty()) {
+				List<NameValuePair> nvps = new ArrayList<NameValuePair>();
+				for (String key : params.keySet()) {
+					nvps.add(new BasicNameValuePair(key, params.get(key)));
+				}
+				try {
+					httpPost.setEntity(new UrlEncodedFormEntity(nvps));
+				} catch (UnsupportedEncodingException e) {
+					// TODO log
+				}
+			}
+			
+			response = getHttpClient().execute(httpPost);
+			processResp(response, httpResponse);
+		} finally {
+			if (response != null) {
+				response.close();
+			}
+		}
+		
+		return httpResponse;
+	}
+	
+	/**
+	 * 配置超时时间和代理
+	 */
+	private RequestConfig getRequestConfig() {
+		RequestConfig requestConfig = RequestConfig.custom()
+				.setSocketTimeout(60000).setConnectTimeout(60000)
+				.setConnectionRequestTimeout(60000).setProxy(proxy).build();
+		return requestConfig;
+	}
+	
+	/**
+	 * 获得CloseableHttpClient
+	 */
+	private CloseableHttpClient getHttpClient() {
+		HttpClientBuilder httpClientBuilder = HttpClientBuilder.create().
+				setDefaultCookieStore(cookieStore);
+		if(ignoreHttpsCertificates) {
+			try {
+				SSLContextBuilder builder = new SSLContextBuilder();
+			    builder.loadTrustMaterial(null, new TrustSelfSignedStrategy());
+			    SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(
+			            builder.build());
+			    httpClientBuilder.setSSLSocketFactory(sslsf);
+			} catch (Exception e) {
+				// TODO log exception
+			}
+		}
+		
+		CloseableHttpClient httpClient = httpClientBuilder.build();
+		return httpClient;
+	}
+	
+	/**
+	 * 将httpEntity的值查询后输出，注意，httpEntity本身是维系一个输出流
+	 * 在这里把所有数据都读出来，所以这里对大数据量会停留很久,XXX 目前还未考虑这种情况的处理，可以从httpEntity拿到输入流
+	 * 数据读完之后就关闭httpEntity
+	 */
+	private void processResp(CloseableHttpResponse response, HttpResponse httpResponse) throws IOException {
+		if(response == null) {
+			throw new IOException("response is null");
+		}
+		
+		httpResponse.statusLine = response.getStatusLine();
+		httpResponse.headers = response.getAllHeaders();
+		
+		HttpEntity httpEntity = response.getEntity();
+		if(httpEntity == null) {
+			throw new IOException("response HttpEntity is null");
+		}
+		
+		if (outputStream != null) {
+			httpEntity.writeTo(outputStream);
+		} else {
+			if(remainBytes) {
+				httpResponse.contentBytes = EntityUtils.toByteArray(httpEntity);
+			} else {
+				if (encode == null) {
+					httpResponse.content = EntityUtils.toString(httpEntity);
+				} else {
+					httpResponse.content = EntityUtils.toString(httpEntity, encode);
+				}
+			}
+		}
+		
+		// 当entity已经处理完了，关闭掉
+		EntityUtils.consume(httpEntity);
+	}
+	
 	public static void main(String[] args) throws IOException {
 		Browser browser = new Browser().setProxyHttp("127.0.0.1", 8888);
 		
 		browser.setIgnoreHttpsCertificates(true);
 		
 		String url = "http://www.baidu.com/";
-		// 发现一个很强大的功能，如果网站302跳转，照样可以处理 XXX
+		// 发现一个很强大的功能，如果网站302跳转，照样可以处理,但这个只对get有效，对post无效
 		HttpResponse content = browser.get(url);
 
 		System.out.println(content.content);
 		System.out.println(content.content.getBytes().length + "字节");
 		
 	    content = browser.get(url); // 第二次请求会带上cookie
+
+		System.out.println(content.content);
+		System.out.println(content.content.getBytes().length + "字节");
+		
+		Map<String, String> postData = new HashMap<String, String>();
+		postData.put("one", "1");
+	    content = browser.post(url, postData); // 第二次请求会带上cookie
 
 		System.out.println(content.content);
 		System.out.println(content.content.getBytes().length + "字节");
