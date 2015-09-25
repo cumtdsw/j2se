@@ -21,9 +21,11 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
+import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.cookie.BasicClientCookie;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.ssl.SSLContextBuilder;
 import org.apache.http.util.EntityUtils;
@@ -83,7 +85,6 @@ public class Browser {
 		this.proxy = null;
 		return this;
 	}
-	
 	/**设置解析返回报文编码*/
 	public Browser setEncode(String encode) {
 		this.encode = encode;
@@ -94,7 +95,20 @@ public class Browser {
 		this.ignoreHttpsCertificates = ignoreHttpsCertificates;
 		return this;
 	}
-	
+	/**拿到浏览器cookies，操作这个列表【不会】操作browser的cookie*/
+	public List<Cookie> getCookies() {
+		return cookieStore.getCookies();
+	}
+	/**添加cookie，如果name相同，会覆盖掉，不关心原来cookie的domain*/
+	public void addCookie(String name, String value, String domain) {
+		BasicClientCookie cookie = new BasicClientCookie(name, value);
+		if(domain != null) {
+			cookie.setDomain(domain);
+		}
+		cookie.setPath("/");
+		cookieStore.addCookie(cookie);
+	}
+
 	/**
 	 * GET方式请求
 	 * @param url
@@ -262,7 +276,22 @@ public class Browser {
 		FileOutputStream out = new FileOutputStream("C:/baidu_logo.png");
 		browser.getToOutputStream(img_url, out);
 		
-		// 
+		// 添加cookie
+		// 注意：要让www.baidu.com带上cookie，domain得写www.baidu.com，写baidu.com没用，这应该是httpclient的bug
+		browser.addCookie("name", "nick", "www.baidu.com");
+		// browser.addCookie("name", "nick", "baidu.com"); // 写多一个也无妨
+		try {
+			Thread.sleep(100);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	    content = browser.get(url); // 会带上cookie
+		System.out.println(content.content);
+		System.out.println(content.content.getBytes().length + "字节");
+		
+		for(Cookie cookie : browser.getCookies()) {
+			System.out.println(cookie);
+		}
 	}
 	
 }
