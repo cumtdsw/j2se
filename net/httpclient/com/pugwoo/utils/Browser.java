@@ -1,5 +1,6 @@
 package com.pugwoo.utils;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -39,6 +40,9 @@ import org.apache.http.util.EntityUtils;
  * 2014年10月22日 09:25:38 增加发送自定义cookie，但不会管理cookie上下文
  * 
  * @author pugwoo
+ * 
+ * 计划实现：
+ * 1. TODO post上传文件
  */
 public class Browser {
 	
@@ -52,22 +56,18 @@ public class Browser {
 		public Header[] headers;
 		/**html正文*/
 		public String content;
-		/**html正文-二进制，当指定需要二进制才有，此时content无值*/
-		public byte[] contentBytes;
 	}
 
 	/**默认浏览器userAgent*/
 	private String USER_AGENT_CHROME_WIN7 = 
 			"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.93 Safari/537.36";
 	
+	/**浏览器userAgent*/
+	private String userAgent = USER_AGENT_CHROME_WIN7;
 	/**http代理*/
 	private HttpHost proxy;
 	/**输出数据编码*/
 	private String encode;
-	/**保留二进制*/
-	private boolean remainBytes;
-	/**重定向输出*/
-	private OutputStream outputStream;
 	/**忽略https证书验证，方便fiddler抓包测试*/
 	private boolean ignoreHttpsCertificates = false;
 	
@@ -89,16 +89,6 @@ public class Browser {
 		this.encode = encode;
 		return this;
 	}
-	/**设置不解析报文，直接保留到byte[] contentBytes，适合于下载文件图片等*/
-	public Browser setRemainBytes(boolean remainBytes) {
-		this.remainBytes = remainBytes;
-		return this;
-	}
-	/**设置将报文直接写入到输出流*/
-	public Browser setOutputStream(OutputStream outputStream) {
-		this.outputStream = outputStream;
-		return this;
-	}
 	/**设置不要校验ssl证书*/
 	public Browser setIgnoreHttpsCertificates(boolean ignoreHttpsCertificates) {
 		this.ignoreHttpsCertificates = ignoreHttpsCertificates;
@@ -108,17 +98,26 @@ public class Browser {
 	/**
 	 * GET方式请求
 	 * @param url
+	 * @param out 当out不为null时，
 	 */
 	public HttpResponse get(String url) throws IOException {
+		return getToOutputStream(url, null);
+	}
+	
+	/**
+	 * 请求并输出到输出流
+	 * @param out 当out为null时，将报文内容保存到HttpResponse的content中，使用的是默认编码或指定的编码
+	 */
+	public HttpResponse getToOutputStream(String url, OutputStream out) throws IOException {
 		CloseableHttpResponse response = null;
 		HttpResponse httpResponse = new HttpResponse();
 		try {
 			HttpGet httpGet = new HttpGet(url);
 			httpGet.setConfig(getRequestConfig());
-			httpGet.setHeader("User-Agent", USER_AGENT_CHROME_WIN7);
+			httpGet.setHeader("User-Agent", userAgent);
 
 			response = getHttpClient().execute(httpGet);
-			processResp(response, httpResponse);
+			processResp(response, httpResponse, out);
 		} finally {
 			// 建立的http连接，仍旧被response保持着，允许我们从网络socket中获取返回的数据
 			// 为了释放资源，我们必须手动消耗掉response或者取消连接（使用CloseableHttpResponse类的close方法）
@@ -126,17 +125,23 @@ public class Browser {
 				response.close();
 			}
 		}
-
 		return httpResponse;
 	}
 	
 	/**
 	 * POST方式请求
-	 * @param url
-	 * @param params
+	 */
+	public HttpResponse post(String url, Map<String, String> params) throws IOException {
+		return postToOutputStream(url, params, null);
+	}
+	
+	/**
+	 * POST方式请求
+	 * @param out 当out为null时，将报文内容保存到HttpResponse的content中，使用的是默认编码或指定的编码
 	 * @return
 	 */
-	public HttpResponse post(String url, Map<String, String> params) throws IOException {		
+	public HttpResponse postToOutputStream(String url, Map<String, String> params,
+			OutputStream out) throws IOException {		
 		CloseableHttpResponse response = null;
 		HttpResponse httpResponse = new HttpResponse();
 		try {
@@ -157,7 +162,7 @@ public class Browser {
 			}
 			
 			response = getHttpClient().execute(httpPost);
-			processResp(response, httpResponse);
+			processResp(response, httpResponse, out);
 		} finally {
 			if (response != null) {
 				response.close();
@@ -204,7 +209,8 @@ public class Browser {
 	 * 在这里把所有数据都读出来，所以这里对大数据量会停留很久,XXX 目前还未考虑这种情况的处理，可以从httpEntity拿到输入流
 	 * 数据读完之后就关闭httpEntity
 	 */
-	private void processResp(CloseableHttpResponse response, HttpResponse httpResponse) throws IOException {
+	private void processResp(CloseableHttpResponse response, HttpResponse httpResponse,
+			OutputStream out) throws IOException {
 		if(response == null) {
 			throw new IOException("response is null");
 		}
@@ -217,18 +223,10 @@ public class Browser {
 			throw new IOException("response HttpEntity is null");
 		}
 		
-		if (outputStream != null) {
-			httpEntity.writeTo(outputStream);
+		if (out != null) {
+			httpEntity.writeTo(out);
 		} else {
-			if(remainBytes) {
-				httpResponse.contentBytes = EntityUtils.toByteArray(httpEntity);
-			} else {
-				if (encode == null) {
-					httpResponse.content = EntityUtils.toString(httpEntity);
-				} else {
-					httpResponse.content = EntityUtils.toString(httpEntity, encode);
-				}
-			}
+			httpResponse.content = EntityUtils.toString(httpEntity, encode);
 		}
 		
 		// 当entity已经处理完了，关闭掉
@@ -258,6 +256,13 @@ public class Browser {
 
 		System.out.println(content.content);
 		System.out.println(content.content.getBytes().length + "字节");
+		
+		// 下载文件
+		String img_url = "http://www.baidu.com/img/bdlogo.png";
+		FileOutputStream out = new FileOutputStream("C:/baidu_logo.png");
+		browser.getToOutputStream(img_url, out);
+		
+		// 
 	}
 	
 }
