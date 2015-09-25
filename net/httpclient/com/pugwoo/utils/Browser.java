@@ -4,10 +4,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -19,6 +23,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.cookie.Cookie;
@@ -115,7 +120,16 @@ public class Browser {
 	 * @param out 当out不为null时，
 	 */
 	public HttpResponse get(String url) throws IOException {
-		return getToOutputStream(url, null);
+		return getToOutputStream(url, null, null);
+	}
+	
+	/**
+	 * GET方式请求
+	 * @param url
+	 * @param out 当out不为null时，
+	 */
+	public HttpResponse get(String url, Map<String, String> params) throws IOException {
+		return getToOutputStream(url, params, null);
 	}
 	
 	/**
@@ -123,9 +137,30 @@ public class Browser {
 	 * @param out 当out为null时，将报文内容保存到HttpResponse的content中，使用的是默认编码或指定的编码
 	 */
 	public HttpResponse getToOutputStream(String url, OutputStream out) throws IOException {
+		return getToOutputStream(url, null, out);
+	}
+	
+	/**
+	 * 请求并输出到输出流
+	 * @param out 当out为null时，将报文内容保存到HttpResponse的content中，使用的是默认编码或指定的编码
+	 */
+	public HttpResponse getToOutputStream(String url, Map<String, String> params, 
+			OutputStream out) throws IOException {
 		CloseableHttpResponse response = null;
 		HttpResponse httpResponse = new HttpResponse();
 		try {
+			if(params != null && !params.isEmpty()) {
+				try {
+					URIBuilder builder = new URIBuilder(url);
+					 for(Entry<String, String> entry : params.entrySet()) {
+						 builder.addParameter(entry.getKey(), entry.getValue());
+					 }
+					 url = builder.build().toString();
+				} catch (URISyntaxException e) {
+					// TODO Auto-generated catch block
+				}
+			}
+		    
 			HttpGet httpGet = new HttpGet(url);
 			httpGet.setConfig(getRequestConfig());
 			httpGet.setHeader("User-Agent", userAgent);
