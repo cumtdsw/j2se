@@ -29,12 +29,15 @@ public class Basic {
 	}
 	
 	/**
-	 * 将文件所有内容读出来，放到byte[]中
+	 * 将文件所有内容读出来，放到byte[]或String中
 	 */
 	@Test
 	public void testReadBinary() throws Exception {
 		// 对于一个文件
 		byte[] bytes = Files.toByteArray(new File("C:/a.txt"));
+		// 对应string
+		// Files.toString(new File("C:/a.txt"), charset)
+		
 		System.out.println("read bytes:" + bytes.length);
 		// 对于输入流
 //		byte[] bytes = ByteStreams.toByteArray(in);
