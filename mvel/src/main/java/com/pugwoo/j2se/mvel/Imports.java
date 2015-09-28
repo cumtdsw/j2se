@@ -10,6 +10,7 @@ public class Imports {
 	public static void main(String[] args) {
         ParserContext ctx = new ParserContext();
         try {
+        	// 也可以加入class并为它重名别名
             ctx.addImport("time", System.class.getMethod("currentTimeMillis"));
         }
         catch (NoSuchMethodException e) {

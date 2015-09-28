@@ -1,13 +1,18 @@
 package com.pugwoo.j2se.mvel;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.mvel2.MVEL;
-import org.mvel2.integration.VariableResolverFactory;
-import org.mvel2.integration.impl.MapVariableResolverFactory;
 
 /**
  * 2015年4月24日 14:48:10
  * 
  * mvel的容器实际上非常强大
+ * 
+ * 2015年9月28日 15:57:00
+ * mvel的变量上下文，按照官方使用VariableResolverFactory vars = new MapVariableResolverFactory()
+ * 来初始化，更简单的，可以用Map<String, Object>来
  */
 public class Container {
 
@@ -20,7 +25,7 @@ public class Container {
 		// map
 		System.out.println(MVEL.eval("[1:2,3:4]"));
 		
-		VariableResolverFactory vars = new MapVariableResolverFactory();
+		Map<String, Object> vars = new HashMap<String, Object>();
 		// 定义一个list，里面有两个map
 		MVEL.eval("objs=[['name':'nick','age':20],['name':'karen','age':18]]", vars);
 		System.out.println(MVEL.eval("objs", vars));
