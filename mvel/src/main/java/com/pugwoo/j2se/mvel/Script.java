@@ -4,15 +4,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.mvel2.MVEL;
-import org.mvel2.integration.VariableResolverFactory;
-import org.mvel2.integration.impl.MapVariableResolverFactory;
 
 public class Script {
 
 	public static void main(String[] args) throws IOException {
-		VariableResolverFactory vars = new MapVariableResolverFactory();
+		Map<String, Object> vars = new HashMap<String, Object>();
 		
 		String resourceFile = "/scripts/hello.mvel";
 		InputStream in = Script.class.getResourceAsStream(resourceFile);

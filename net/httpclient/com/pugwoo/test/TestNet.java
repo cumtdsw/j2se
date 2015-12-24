@@ -46,7 +46,7 @@ public class TestNet {
 
 		List<Cookie> cookies = new ArrayList<Cookie>();
 		BasicClientCookie cookie = new BasicClientCookie("test", "hello");
-		cookie.setDomain("baidu.com"); // 必须设置，它必须是url的host的后缀，例如com都可以
+		cookie.setDomain("www.baidu.com"); // 必须设置，它必须是url的host的后缀，例如com都可以
 //	    cookie.setPath("/");
 		cookies.add(cookie);
 		
