@@ -10,3 +10,7 @@ linux下：
 java -cp lib/*:build/jar/HelloWorld.jar oata.HelloWorld
 
 输出的log文件位置：/tmp/ant_hello.log
+
+===================================================================
+2016年1月4日 14:33:32
+现在大部分项目都是Maven项目，ant在新项目已经不用了。
