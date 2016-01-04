@@ -1,4 +1,4 @@
-package com.pugwoo.test;
+package oro;
 
 import org.apache.oro.text.regex.MalformedPatternException;
 import org.apache.oro.text.regex.MatchResult;
