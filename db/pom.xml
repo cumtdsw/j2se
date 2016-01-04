@@ -26,6 +26,7 @@
 			<version>1.4</version>
 		</dependency>
 
+        <!-- ormlite -->
 		<dependency>
 			<groupId>com.j256.ormlite</groupId>
 			<artifactId>ormlite-core</artifactId>
@@ -37,6 +38,14 @@
 			<version>4.48</version>
 		</dependency>
 
+        <!-- orman -->
+		<dependency>
+			<groupId>orman</groupId>
+			<artifactId>orman</artifactId>
+			<version>20120316</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/orman-20120316.jar</systemPath>
+		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>
