@@ -1,4 +1,4 @@
-package test;
+package interface_enum;
 
 import static interface_enum.ErrorCode.*;
 
