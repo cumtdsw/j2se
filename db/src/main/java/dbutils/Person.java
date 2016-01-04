@@ -1,4 +1,4 @@
-package com.pugwoo.test.dbutils;
+package dbutils;
 
 /**
 

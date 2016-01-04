@@ -1,4 +1,4 @@
-package com.pugwoo.test;
+package jdbc;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;

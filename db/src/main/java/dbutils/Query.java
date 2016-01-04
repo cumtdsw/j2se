@@ -1,4 +1,4 @@
-package com.pugwoo.test.dbutils;
+package dbutils;
 
 import java.sql.SQLException;
 import java.util.List;
