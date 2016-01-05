@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN"> <!-- monitorInterval="30" 属性可以动态30秒检查配置修改 -->
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+    </Console>
+  </Appenders>
+  <Loggers> <!-- 经过实验，Loggers里的元素没有顺序关联 -->
+  
+    <Root level="ERROR">
+      <AppenderRef ref="Console"/>
+    </Root>
+
+    <!-- log4j包log级别设置为TRACE -->
+    <Logger name="log4j" level="TRACE">
+    <!-- <AppenderRef ref="Console"/> 如果指定这个，会使得消息打印两遍，要么Logger加上additivity="false"-->
+    <!-- 重要，之所以这里没有配置AppenderRef，也可以打印到STDOUT，是因为默认没有打出去的日志，都打到root logger中 -->
+    </Logger>
+    
+  </Loggers>
+</Configuration>
