@@ -1,4 +1,4 @@
-package test.org.apache.common.io;
+package test_common_io;
 
 import java.io.IOException;
 import java.io.InputStream;

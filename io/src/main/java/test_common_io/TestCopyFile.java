@@ -1,4 +1,4 @@
-package test.org.apache.common.io;
+package test_common_io;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
