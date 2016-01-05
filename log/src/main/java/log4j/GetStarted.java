@@ -1,10 +1,12 @@
-package com.pugwoo;
+package log4j;
 
 import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
 /**
  * 2013年2月20日 23:00:57
+ * 
+ * 这个是直接使用log4j，没有通过SLF来使用
  */
 public class GetStarted {
 

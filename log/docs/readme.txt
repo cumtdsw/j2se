@@ -17,6 +17,9 @@ layouts: 负责以不同的风格格式化日志信息。
 ConsoleAppender的pattern设置为"%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
 
 log4j 2.x 不再支持.properties的文件配置方式，推荐用xml
-
 ================
 SLF是一个通用接口，不提供实现，它使得不同的库类可以兼容不同的log组件。
+
+2016年1月5日 14:46:33
+log4j和logback的作者相同，他推荐使用logback。
+
