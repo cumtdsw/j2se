@@ -1,0 +1,18 @@
+======================Pattern配置==========================
+%d{yyyy-MM-dd HH:mm:ss.SSS} %d表示时间，后面值是时间格式
+
+%logger{36} 表示logger名字最长36个字符，否则按照句点分割。
+Conversion	specifier	Logger name		Result
+%logger		mainPackage.sub.sample.Bar	mainPackage.sub.sample.Bar
+%logger{0}	mainPackage.sub.sample.Bar	Bar
+%logger{5}	mainPackage.sub.sample.Bar	m.s.s.Bar
+%logger{10}	mainPackage.sub.sample.Bar	m.s.s.Bar
+%logger{15}	mainPackage.sub.sample.Bar	m.s.sample.Bar
+%logger{16}	mainPackage.sub.sample.Bar	m.sub.sample.Bar
+%logger{26}	mainPackage.sub.sample.Bar	mainPackage.sub.sample.Bar
+
+%msg%n  其中msg表示打印输出的消息， %n表示换行
+
+%thread 当前线程名称
+
+%-5level 日志级别
