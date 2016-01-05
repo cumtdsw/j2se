@@ -1,4 +1,4 @@
-package test_service_loader;
+package resources.test_service_loader;
 
 import java.util.ServiceLoader;
 

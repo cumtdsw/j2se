@@ -1,4 +1,4 @@
-package test_read_jar;
+package resources.test_read_jar;
 
 import java.io.IOException;
 import java.net.URL;

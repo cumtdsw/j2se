@@ -1,4 +1,4 @@
-package test;
+package resources.test;
 
 /**
  * 2014年8月6日 21:48:44

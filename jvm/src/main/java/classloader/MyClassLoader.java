@@ -1,4 +1,4 @@
-package jvm.classloader;
+package classloader;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
