@@ -1,0 +1,17 @@
+2016年1月6日 11:27:20
+
+程序一般是这样拿到Logger：
+Logger LOGGER = LoggerFactory.getLogger(Main.class);
+实际上执行的是：
+Logger logger = getLogger(clazz.getName())
+
+所以，一般来说我们都使用类的全称来命名loggerName
+
+实际上，loggerName可以自己随便指定，例如abc_def，
+然后logback.xml中配置的<logger>节点的name名称，会和程序拿的loggerName做匹配：
+
+匹配规则是.的包的层次关系，实际上，你指定abc_def，logback也不知道这个是类名、包名还是自己指定的。
+
+例如：<logger>的name是abc_def,
+那么它匹配程序中getLogger的名称是abc_def或abc_def.aaa或abc_def.aaa.String
+
