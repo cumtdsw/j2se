@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Collections是一个工具箱
+ * Collections是一个工具类，最常用的是排序、查找，还有其它功能，很实用
  */
 public class TestCollecctions {
 
@@ -23,7 +23,8 @@ public class TestCollecctions {
 		for(int i = 0; i < 100; i++) {
 			a.add(100 - i);
 		}
-		Collections.sort(a); // 排序，正序
+		Collections.sort(a); // 排序，正序，list的元素要实现Comparable接口
+		// 【更复杂的查询详见TestSortingList】
 		
 		for(Integer i : a) {
 			System.out.println(i);

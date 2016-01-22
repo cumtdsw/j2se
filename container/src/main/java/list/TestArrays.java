@@ -3,7 +3,8 @@ package list;
 import java.util.Arrays;
 
 /**
- * Arrays是一个工具箱，本身没有构造方法。
+ * Arrays是一个数组[]的工具类，本身没有构造方法。
+ * Arrays只操作数组，所以它是很基本的类，一般用Collections这个更抽象的工具类
  */
 public class TestArrays {
 
@@ -20,7 +21,7 @@ public class TestArrays {
 		// 排序
 		Arrays.sort(a);
 		
-		// 还有复制、拷贝等其它对数组的操作。
+		// 还有复制、拷贝等其它对数组的操作。适合于底层优化
 	}
 	
 }

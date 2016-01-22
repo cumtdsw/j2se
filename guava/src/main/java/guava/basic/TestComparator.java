@@ -13,6 +13,10 @@ import com.google.common.primitives.Ints;
 /**
  * 2015年6月7日 15:29:41
  * http://ifeve.com/google-guava-ordering/
+ * 
+ * Ordering的优势在于组合
+ * 
+ * Ordering实现的comparator都很值得学习
  */
 public class TestComparator {
 
