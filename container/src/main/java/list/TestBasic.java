@@ -33,5 +33,6 @@ public class TestBasic {
 		for(Integer i : list2) {
 			System.out.println(i);
 		}
+		// list2.add(4); // 【特别注意】Arrays.asList创建的List不支持add/delete等写操作
 	}
 }
