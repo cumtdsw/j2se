@@ -24,6 +24,7 @@ public class TestAdvanceSerialize {
 		s.writeObject(student);
 		
 		s.flush();
+		s.close();
 		
 		// ObjectInputStream反序列化
 		FileInputStream in = new FileInputStream("tmp_TestAdvanceSerialize");
@@ -31,8 +32,6 @@ public class TestAdvanceSerialize {
 		Student stu = (Student) ins.readObject();
 		
 		System.out.println(stu);
-		
-		s.close();
 		ins.close();
 	}
 

@@ -3,7 +3,7 @@ import java.io.Serializable;
 
 /**
  * 自定义可以【自动】序列化的类
- * 只要实现Serializable接口就可以了
+ * 只要实现Serializable接口就可以了，这个是java自带的序列化和反序列化功能
  * 
  * @author Administrator
  */
@@ -16,7 +16,7 @@ public class Student implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 【重要】序列化奖不会自动序列化声明为transient或static的成员
+	 * 【重要】序列化不会自动序列化声明为transient或static的成员
 	 */
 
 	// 姓名
