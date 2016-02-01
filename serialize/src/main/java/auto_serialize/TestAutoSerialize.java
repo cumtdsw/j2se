@@ -1,10 +1,7 @@
 package auto_serialize;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
+import utils.SerializeTools;
 
 public class TestAutoSerialize {
 
@@ -15,25 +12,14 @@ public class TestAutoSerialize {
 	 * @throws ClassNotFoundException 
 	 */
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
-		// ObjectOutputStream序列化
-		FileOutputStream f = new FileOutputStream("tmp_TestAutoSerialize");
-		ObjectOutputStream s = new ObjectOutputStream(f);
-//		s.writeObject("Today");
-		// 自己的序列化类
 		Student student = new Student();
 		student.setName("nick");
-		student.setScore(99.9f);
-		s.writeObject(student);
+		student.setScore(99f);
 		
-		s.flush();
-		
-		// ObjectInputStream反序列化
-		FileInputStream in = new FileInputStream("tmp_TestAutoSerialize");
-		ObjectInputStream ins = new ObjectInputStream(in);
-//		String today = (String) ins.readObject();
-		Student stu = (Student) ins.readObject();
-		
-//		System.out.println(today);
+		byte[] bytes = SerializeTools.serialize(student);
+		System.out.println("bytes size:" + bytes.length);
+
+		Student stu = (Student) SerializeTools.deserialize(bytes);
 		System.out.println(stu);
 	}
 

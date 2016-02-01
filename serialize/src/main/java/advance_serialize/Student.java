@@ -21,6 +21,7 @@ public class Student implements Serializable{
 		return "name:" + name + ",age:" + age;
 	}
 	
+	// 这个接口是约定的，可以是private
 	private void writeObject(java.io.ObjectOutputStream stream)
 			throws java.io.IOException {
 		// "Encrypt"/obscure the sensitive data
@@ -28,6 +29,7 @@ public class Student implements Serializable{
 		stream.defaultWriteObject();
 	}
 
+	// 这个接口是约定的，可以是private
 	private void readObject(java.io.ObjectInputStream stream)
 			throws java.io.IOException, ClassNotFoundException {
 		stream.defaultReadObject();

@@ -1,10 +1,8 @@
 package advance_serialize;
 
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+
+import utils.SerializeTools;
 
 /**
  * 2014年5月21日 11:50:27
@@ -12,25 +10,15 @@ import java.io.ObjectOutputStream;
 public class TestAdvanceSerialize {
 
 	public static void main(String[] args) throws IOException, ClassNotFoundException {
-		// ObjectOutputStream序列化
-		FileOutputStream f = new FileOutputStream("tmp_TestAdvanceSerialize");
-		ObjectOutputStream s = new ObjectOutputStream(f);
-		
 		Student student = new Student();
 		student.setName("nick");
 		student.setAge(27);
-		s.writeObject(student);
 		
-		s.flush();
-		s.close();
+		byte[] bytes = SerializeTools.serialize(student);
+		System.out.println("bytes size:" + bytes.length);
 		
-		// ObjectInputStream反序列化
-		FileInputStream in = new FileInputStream("tmp_TestAdvanceSerialize");
-		ObjectInputStream ins = new ObjectInputStream(in);
-		Student stu = (Student) ins.readObject();
-		
+		Student stu = (Student) SerializeTools.deserialize(bytes);
 		System.out.println(stu);
-		ins.close();
 	}
 
 }
