@@ -19,7 +19,7 @@ public class Printf {
 		 */
 		Formatter f = new Formatter(System.out);
 		f.format("id: %d\n", 123);
-		
+		f.close();
 	}
 
 }

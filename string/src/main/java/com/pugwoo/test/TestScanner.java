@@ -17,6 +17,7 @@ public class TestScanner {
 		System.out.println("your name is " + name + "\nhow old are you?");
 		Integer age = stdin.nextInt();
 		System.out.println("your age is " + age);
+		stdin.close();
 		
 		/**
 		 *  还有一种用法是使用Scanner的定界符
@@ -27,6 +28,7 @@ public class TestScanner {
 		scanner.useDelimiter("\\s*,\\s*");
 		while(scanner.hasNextInt())
 			System.out.println(scanner.nextInt());
+		scanner.close();
 		
 		/**
 		 * 还有一种是复杂的时候可用的：正则表达式扫描
@@ -45,6 +47,6 @@ public class TestScanner {
 			String date = match.group(2);
 			System.out.format("Thread on %s from %s\n", date, ip);
 		}
-		
+		scanner.close();
 	}
 }

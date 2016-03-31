@@ -15,7 +15,6 @@ public class Regex {
 		 * 判断是否所有字符都是数字，空的也算是
 		 */
 		System.out.println("123".matches("[0-9]*")); // true
-		
 		/**
 		 * 测试行首^行尾$的匹配
 		 */
@@ -27,33 +26,48 @@ public class Regex {
 		 */
 		String str = "hello world";
 		String[] strArr = str.split(" ");
-		for (String s : strArr)
+		for (String s : strArr) {
 			System.out.println(s);
+		}
 	}
 	
 	/**
 	 * 完整的强大功能的regex功能演示
 	 */
-	public static void fullExample(){
+	public static void fullExample() {
+		String str = "hello123world 456~~789";
+		
 		// step 1. 构造正则表达式Pattern
 		Pattern pattern = Pattern.compile("[0-9]+"); // 获得数字串的regex
-		
-		String str = "hello123world 456~~789";
 		// step 2. 匹配
 		Matcher matcher = pattern.matcher(str);
-		
 		// step 3. 拿出数据group()
 		while(matcher.find()){
 			System.out.println("match \"" + matcher.group() + "\" at position"
 					+ matcher.start() + "-" + (matcher.end() - 1));
 		}
+	}
+	
+	/**
+	 * 测试从string中拿到正则匹配到的部分数据，用的是group
+	 */
+	public static void fetchSomethingExample() {
+		String html = "<title>xxx</title><h1>h1标题</h1>";
 		
+		Pattern pattern = Pattern.compile("<title>(.*)</title><h1>(.*)</h1>"); // ()就表示一个group分组
+		Matcher matcher = pattern.matcher(html);
+		while(matcher.find()) {
+			// group(int) 从1 开始
+			System.out.println("title:" + matcher.group(1) + ",h1:" + matcher.group(2));
+		}
 	}
 
 	public static void main(String[] args) {
 		easyExample();
 		System.out.println("-------------------------------------------------");
 		fullExample();
+		System.out.println("-------------------------------------------------");
+		fetchSomethingExample();
 	}
 
 }
