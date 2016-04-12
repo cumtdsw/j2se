@@ -5,22 +5,19 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.Channels;
-import java.nio.channels.FileChannel;
-import java.nio.channels.WritableByteChannel;
 
 /**
  * http://rainlife.iteye.com/blog/70072 2014年8月11日 19:12:30
  * 自定义ClassLoader例子，只能加载class文件，还不能加载jar包
+ * 
+ * 加载jar包思路：jar包就是类似zip压缩包，加载jar包就是解压并加载jar包中的class二进制文件
  */
 public class MyClassLoader extends ClassLoader {
 
 	private String fileName;
 
 	/**
-	 * @param fileName
-	 *            class文件的目录位置
+	 * @param fileName class文件的目录位置
 	 */
 	public MyClassLoader(String dirName) {
 		this.fileName = dirName;
@@ -40,28 +37,20 @@ public class MyClassLoader extends ClassLoader {
 			try {
 				String classFile = getClassFile(className);
 				FileInputStream fis = new FileInputStream(classFile);
-				
-				FileChannel fileC = fis.getChannel();
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				WritableByteChannel outC = Channels.newChannel(baos);
-				ByteBuffer buffer = ByteBuffer.allocateDirect(1024);
 				
-				while (true) {
-					int i = fileC.read(buffer);
-					if (i == 0 || i == -1) {
-						break;
-					}
-					buffer.flip();
-					outC.write(buffer);
-					buffer.clear();
+				int readBytes = 0;
+				byte[] buf = new byte[4096];
+				while((readBytes = fis.read(buf)) >= 0) {
+					baos.write(buf, 0, readBytes);
 				}
 				fis.close();
-				// 写了这么长的代码，就是为了获得class文件的二进制byte[]
 				byte[] bytes = baos.toByteArray();
 
 				// 调用父类的defineClass来加载class
 				// 它只接受二进制
 				clazz = defineClass(className, bytes, 0, bytes.length);
+				
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {

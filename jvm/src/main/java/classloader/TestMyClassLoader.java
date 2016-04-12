@@ -4,10 +4,11 @@ public class TestMyClassLoader {
 	
 	public static void main(String[] args) {
 		try {
-			// TODO 这个位置自行修改 !!
-			MyClassLoader tc = new MyClassLoader("C:\\Users\\boyu.xby\\git\\j2se\\jvm\\bin\\");
+			// XXX 这个位置根据实际情况修改，它是编译出来的class文件的根目录，例如maven编译出来的target/classes目录
+			MyClassLoader tc = new MyClassLoader("D:/code/j2se/jvm/target/classes");
+			System.out.println("tc's parent classloader is:" + tc.getParent());
 			
-			Class<?> c = tc.findClass("jvm.classloader.Test");
+			Class<?> c = tc.findClass("classloader.Test");
 			Object obj = c.newInstance();
 			
 			System.out.println(obj.getClass());
@@ -22,6 +23,7 @@ public class TestMyClassLoader {
 			
 			// java.lang.ClassCastException: jvm.classloader.Test cannot be cast to jvm.classloader.Test
 			Test test = (Test) obj; // 这样是不行的
+			System.out.println("test:" + test);
 			
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();

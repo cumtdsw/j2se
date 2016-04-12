@@ -1,5 +1,8 @@
 package classloader;
 
+/**
+ * 这个类给classloader测试用的
+ */
 public class Test {
 
 	public Test() {
