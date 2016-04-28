@@ -75,6 +75,11 @@ public class PropertySyncTool {
 		 * 看PropertyUtils的实现原理：
 		 * 它没有语法树，就是约定这些简单的层次.(NESTED)结构之后，一层一层的取。
 		 */
+		
+		// 复制对象，整个复制
+		InnerClass copied = new InnerClass();
+		PropertyUtils.copyProperties(copied, innerClass);
+		System.out.println("copied name:" + copied.getInnerInnerClass().getName());
 	}
 
 }
