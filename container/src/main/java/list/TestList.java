@@ -10,7 +10,7 @@ import java.util.List;
  * 数组列表：ArrayList 
  * 指针链式列表：LinkedList，对于大量中间位置增删元素很合适
  */
-public class TestBasic {
+public class TestList {
 	
 	public static void main(String[] args) {
 		List<Integer> list = new ArrayList<Integer>();
