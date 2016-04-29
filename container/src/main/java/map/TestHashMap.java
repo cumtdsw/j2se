@@ -1,15 +1,13 @@
 package map;
 import java.util.HashMap;
 
-import junit.framework.TestCase;
-
 /**
  * 2012年2月7日 12:43:10
  * 
  * hash算法：就2种，“分桶单链表”或“N次探测法”
  */
-public class TestHashMap extends TestCase {
-
+public class TestHashMap {
+	
 	public static void main(String[] args) {
 		HashMap<Integer, Integer> hashMap = new HashMap<Integer, Integer>();
 		
