@@ -6,7 +6,7 @@ SubList的实现在AbstractList中，抽象上实现，物理上并没有复制�
 
 如果Iterator在遍历过程中，容器发生了变化，那会怎么样？
 1) List不支持并发操作，
-2) AbstractList中有个modCount变量，每次改变list，这个值就会自增，List就是靠这个值来判断是否被并发修改了。
+2) AbstractList中有个modCount变量，每次改变list，这个值就会自增，List就是靠这个值来判断是否被并发修改了。(CAS原理)
 
 ArrayList中存放数据的变量叫：Object[] elementData。
 关于自动扩展容量：int newCapacity = oldCapacity + (oldCapacity >> 1); // 最基本一行

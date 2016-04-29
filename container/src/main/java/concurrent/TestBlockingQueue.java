@@ -1,10 +1,12 @@
-package queue;
+package concurrent;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * 2014年6月11日 10:25:03 阻塞队列：等价于linux的msgq 阻塞队列是线程安全的。
+ * 
+ * 【生产者消费者模型】
  * 
  * BlockingQueue的核心方法：
 放入数据：

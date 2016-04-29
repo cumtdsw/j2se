@@ -1,5 +1,6 @@
 package map;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 2012年2月7日 12:43:10
@@ -9,7 +10,7 @@ import java.util.HashMap;
 public class TestHashMap {
 	
 	public static void main(String[] args) {
-		HashMap<Integer, Integer> hashMap = new HashMap<Integer, Integer>();
+		Map<Integer, Integer> hashMap = new HashMap<Integer, Integer>();
 		
 		for(Integer i = 0; i< 1000000; i++) {
 			hashMap.put(i, i);
@@ -17,9 +18,5 @@ public class TestHashMap {
 		//hashMap.put("name", "nick");
 		System.out.println(hashMap.size());
 		
-		// 整理内存后打印内存大小，单位B
-		System.gc();
-		System.out.println(Runtime.getRuntime().totalMemory());
-		//System.out.println(hashMap.get("name"));
 	}
 }
