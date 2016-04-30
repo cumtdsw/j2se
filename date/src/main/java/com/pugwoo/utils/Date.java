@@ -8,6 +8,9 @@ import java.util.Calendar;
  * 对JAVA自带的Date、DateFormat、Calendar等的封装
  * 设计：提供String的输入输出格式，包括【自身输入输出格式】和【全局输入输出格式】
  * 
+ * 2016年4月29日 16:54:46
+ * 【已经迁移到woo-utils中】，不要再修改这里了
+ * 
  * @author pugwoo
  * @date 2011年9月19日 上午12:05:18 创建
  * @date 2011-12-15 23:07 新增写入、日期计算

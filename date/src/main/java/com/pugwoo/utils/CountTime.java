@@ -76,4 +76,11 @@ public class CountTime {
 		stop();
 		System.out.println(getTimeInNs() + "ns.");
 	}
+	
+	public static void main(String[] args) {
+		// 使用方式
+		CountTime countTime = new CountTime();
+		countTime.start();
+		countTime.printInMs();
+	}
 }
