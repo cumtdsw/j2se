@@ -11,6 +11,9 @@ import com.google.common.base.Preconditions;
  * 实际上关于这种数据不对就抛异常，而且是Runtime异常的这种
  * 我觉得对调用方不够友好，如果调用方数据不正确，将导致它的程序停止
  * 而这种隐藏的Exception并没有足够的语义让调用者去捕获异常
+ * 
+ * 实际上，对外暴露的返回值return中会加上result/code/message这样的错误信息，不会直接抛异常。
+ * 
  */
 public class TestAssert {
 	

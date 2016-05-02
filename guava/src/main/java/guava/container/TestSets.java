@@ -14,26 +14,28 @@ public class TestSets {
 
 	@Test
 	public void testNewTreeSet() {
-        Set<Student> sets = Sets.newTreeSet(new Comparator<Student>() {
-        	/**
-        	 * 发现一个很【严重】的问题，关于Sets.newTreeSet
-        	 * 如果compare返回值相同，那么这两个对象会被【合并】成一个！！！根本就不是排序
-        	 * 这个非常不合理，虽说Set只允许一个object，但是Comparator是用于排序的，而不是equals！！
-        	 * 
-        	 * 所以，如果仅仅是想排序，而一定不愿意删除数据，那么千万不能使用Sets
-        	 * @param o1
-        	 * @param o2
-        	 * @return
-        	 */
-            @Override
-            public int compare(Student o1, Student o2) {
-//            	if(o1.getName() == null || o2.getName() == null) {
-//            		return 0;
-//            	}
-//                return o2.getName().compareTo(o1.getName());
-            	return 0;
-            }
-        });
+//        Set<Student> sets = Sets.newTreeSet(new Comparator<Student>() {
+//        	/**
+//        	 * 发现一个很【严重】的问题，关于Sets.newTreeSet
+//        	 * 如果compare返回值相同，那么这两个对象会被【合并】成一个！！！根本就不是排序
+//        	 * 这个非常不合理，虽说Set只允许一个object，但是Comparator是用于排序的，而不是equals！！
+//        	 * 
+//        	 * 使用 newHashSet就可以了
+//        	 * @param o1
+//        	 * @param o2
+//        	 * @return
+//        	 */
+//            @Override
+//            public int compare(Student o1, Student o2) {
+////            	if(o1.getName() == null || o2.getName() == null) {
+////            		return 0;
+////            	}
+////                return o2.getName().compareTo(o1.getName());
+//            	return 0;
+//            }
+//        });
+		
+		Set<Student> sets = Sets.newHashSet();
         
         Student student3 = new Student(1, null);
         Student student1 = new Student(3, "nick");
