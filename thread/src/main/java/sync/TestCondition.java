@@ -31,7 +31,7 @@ public class TestCondition{
 			public void run() {
 				lock.lock();
 				try {
-					condition.await(); // 等待被另外一个线程叫醒
+					condition.await(); // 等待被另外一个线程叫醒,这个相当于释放了锁？
 					// wait()支持超时机制
 					
 					System.out.println("second");
@@ -48,7 +48,9 @@ public class TestCondition{
 		Thread.sleep(1000);
 		System.out.println("main thread wake up");
 		lock.lock();
+		System.out.println("main is locked");
 		try {
+			System.out.println("main call signal");
 			condition.signal();
 		} finally {
 			lock.unlock();

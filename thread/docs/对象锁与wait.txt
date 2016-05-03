@@ -16,3 +16,5 @@ synchronized(obj)会试图获得obj的对象锁，获得之后进入执行synchr
 ====
 避免管程锁死的一个特点，就是要注意synchronized最好只有一个obj，而且在该obj上wait()。
 不要synchronized多个对象。
+
+特别的，synchronized不要用Integer、String等不可变对象！！
