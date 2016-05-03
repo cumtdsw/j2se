@@ -14,6 +14,8 @@ import java.util.Enumeration;
 public class TestReadJarResources {
 
 	public static void main(String[] args) throws IOException {
+		System.out.println(TestReadJarResources.class.getResource("/readme.txt"));
+		
 		URL resource = TestReadJarResources.class.getClassLoader()
 				.getResource("readme.txt");
 		// jar:file:/I:/github/j2se/jvm/lib/test_jar_1.jar!/readme.txt

@@ -17,6 +17,7 @@ public class TestInitialize {
 		{
 			put("Name", "June");
 			put("QQ", "4889983");
+			System.out.println("put name and qq");
 		}
 	};
 	 
