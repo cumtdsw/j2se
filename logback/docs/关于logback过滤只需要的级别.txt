@@ -1,0 +1,16 @@
+有一个实际的需求：
+应用打出来log，所有都记录到一个log文件中，其中又把ERROR级别的错误记录到另外一个文件log2中。
+
+这种情况在<appender>中加入filter是最方便的方式：
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        
+这个是非常简单的filter，它继承AbstractMatcherFilter<ILoggingEvent>。但是只能指定level来判断，
+如果我想加入WARN和ERROR就没发做到。
+
+做到的方式就是自己写Filter，继承AbstractMatcherFilter<ILoggingEvent>
+重写FilterReply decide(ILoggingEvent event) 方法。
+
