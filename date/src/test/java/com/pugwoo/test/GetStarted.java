@@ -22,7 +22,7 @@ public class GetStarted {
 		Date date = dateFormat.parse("2011-04-03T09:00:00");
 		System.out.println(date);
 
-		// 通过Date获得Calendar
+		// 通过Date获得Calendar, 注：Calendar拿到后初始的值就是当前的时间 setTimeInMillis(System.currentTimeMillis());
 		Calendar calendar = Calendar.getInstance();
 
 		// 对Calendar进行日期的运算
