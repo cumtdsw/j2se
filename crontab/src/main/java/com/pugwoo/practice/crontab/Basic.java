@@ -4,6 +4,9 @@ import java.util.Date;
 
 import it.sauronsoftware.cron4j.Scheduler;
 
+/**
+ * 重要：这种方式可能导致tomcat没有办法正常结束
+ **/
 public class Basic {
 
 	public static void main(String[] args) throws Exception {
