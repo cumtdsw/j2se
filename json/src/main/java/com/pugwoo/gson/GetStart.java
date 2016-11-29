@@ -26,11 +26,11 @@ public class GetStart {
 		System.out.println(gson.toJson(new Long(10)));
 		System.out.println(gson.toJson(new int[]{1,2,3,4}));
 		
-		Set set = new HashSet();
+		Set<String> set = new HashSet<String>();
 		set.add("set1"); set.add("set2");
 		System.out.println(gson.toJson(set));
 		
-		Map map = new HashMap();
+		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("mapkey1", "mapvalue1");
 		map.put("mapkey2", 8888);
 		System.out.println(gson.toJson(map));

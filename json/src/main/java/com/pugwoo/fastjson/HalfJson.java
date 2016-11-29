@@ -15,10 +15,11 @@ public class HalfJson {
 		 * Map测试
 		 */
 		String json = "{\"id\":3,\"name\":\"pugwoo\",\"password\":\"123456789abcdefg\",\"age\":24,\"income\":1234.56789,\"others\":{\"birth\":\"1987-03-30\",\"male\":true,\"interest:\":[\"Computer\",3,\"math\"]}}";
-		Map map = null;
+		Map<String, Object> map = null;
 		start = System.nanoTime();
-		for (int i = 0; i < 100000; i++)
-			map = (Map) JSON.parse(json);
+		for (int i = 0; i < 100000; i++) {
+			map = JSON.parseObject(json);
+		}
 		end = System.nanoTime();
 		System.out.println("execute " + (end - start) / 1000000.0 + "ms.");
 		System.out.println(map);
@@ -27,10 +28,11 @@ public class HalfJson {
 		 * List测试
 		 */
 		json = "[\"hi\",123,123.4545,[],[\"google\",{},{\"name\":\"g\",\"age\":28}]]";
-		List list = null;
+		List<Object> list = null;
 		start = System.nanoTime();
-		for (int i = 0; i < 100000; i++)
-			list = (List) JSON.parse(json);
+		for (int i = 0; i < 100000; i++) {
+			list = JSON.parseArray(json);
+		}
 		end = System.nanoTime();
 		System.out.println("execute " + (end - start) / 1000000.0 + "ms.");
 		System.out.println(list);

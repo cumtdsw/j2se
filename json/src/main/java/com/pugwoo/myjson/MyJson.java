@@ -47,12 +47,11 @@ public class MyJson {
 		}else return null;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public String toJson(){
 		StringBuffer sb = new StringBuffer();
 		if(map != null){
 			sb.append('{');
-			Set keys = map.keySet();
+			Set<String> keys = map.keySet();
 			Iterator<String> iter = keys.iterator();
 			if(iter.hasNext()){ //先处理第一个
 				String key = iter.next(); //约定ObjectName不包含冒号
