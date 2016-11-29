@@ -1,13 +1,13 @@
 # 关于fastjson的常用使用技巧
 
-
+- 使用`@JSONField`注解配置序列化输入和输出的名称和格式
 
 
 # 关于JSON工具的选择
 
 ### fastjson
 
-推荐fastjson[from 2012]:
+推荐fastjson（from 2012）:
 
 - 支持非严格json：map{}的属性名称不需要双引号，字符串可以用单引号
 
