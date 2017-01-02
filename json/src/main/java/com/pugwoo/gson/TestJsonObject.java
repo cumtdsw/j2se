@@ -19,12 +19,12 @@ public class TestJsonObject {
 		Type mapType = new TypeToken<Map<String,String>>() {
 		}.getType();
 		
-		Map map = gson.fromJson(json,mapType);
+		Map<String, Object> map = gson.fromJson(json,mapType);
 		
 		System.out.println(map.size());
 		
-		Set keys = map.keySet();
-		Iterator iter = keys.iterator();
+		Set<String> keys = map.keySet();
+		Iterator<String> iter = keys.iterator();
 		while(iter.hasNext()){
 			String key = (String)iter.next();
 			System.out.println((String)map.get(key));

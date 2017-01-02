@@ -84,7 +84,7 @@ public class GetStart {
 		 * parse
 		 */
 		String json = "{id:3,name:'pugwoo',age:''}";
-		Map map = (Map) JSON.parse(json);
+		Map<String, Object> map = (Map<String, Object>) JSON.parse(json);
 		System.out.println(map);
 
 		/**

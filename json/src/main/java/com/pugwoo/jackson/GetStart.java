@@ -34,7 +34,7 @@ public class GetStart {
 	public static void deserialize2() throws Exception{
 		String json = "{\"id\":3.3,\"name\":\"pugwoo\",\"school.name\":\"sysu\"}";
 		ObjectMapper mapper = new ObjectMapper();
-		Map map = mapper.readValue(json, HashMap.class);
+		Map<?, ?> map = mapper.readValue(json, HashMap.class);
 		System.out.println(map);
 		System.out.println(((Object)map.get("id")).getClass());
 	}
