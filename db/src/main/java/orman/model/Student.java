@@ -15,6 +15,15 @@ import org.orman.mapper.annotation.PrimaryKey;
  * 
  * 自定义表名、列明、自增、notnull、列类型等
  * https://github.com/ahmetalpbalkan/orman/wiki/Entity-and-field-customizations
+ * 
+ * CREATE TABLE `student` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(767) NOT NULL,
+  `regdate` datetime DEFAULT NULL,
+  `gpa` float DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `name_index` (`name`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1
  */
 @Entity
 public class Student extends Model<Student> {
