@@ -1,6 +1,5 @@
 package guava.container;
 
-import java.util.Comparator;
 import java.util.Set;
 
 import org.junit.Test;
