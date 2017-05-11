@@ -16,7 +16,7 @@ public class FixedThreadPool {
 		// 创建一个最多同时运行 3 个任务的线程池
 		ExecutorService service = Executors.newFixedThreadPool(3);
 
-		// 安排若干个任务运行
+		// 安排若干个任务运行,所有任务会一定性提给线程池，然后线程池自己安排
 		for (int i = 1; i <= 20; i++) {
 			service.execute(new RunnableImpl(i));
 		}

@@ -35,6 +35,7 @@ public class TestScheduledThreadPoolExecutor {
 		/**
 		 * 周期性new线程并启动。第二个参数是初始延迟，第三个参数是执行周期，第4个参数是时间单位
 		 */
+		@SuppressWarnings("unused")
 		ScheduledFuture<?> future = exec.scheduleAtFixedRate(new Runnable() {
 			@Override
 			public void run() { // Runnable不能声明抛出异常

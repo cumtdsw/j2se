@@ -5,6 +5,8 @@ import java.util.List;
 
 /**
  * 2014年7月1日 10:41:46
+ * 
+ * 使用wait()和notify()实现线程安全阻塞队列
  */
 public class BlockingQueue {
 
