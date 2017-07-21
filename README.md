@@ -1,6 +1,6 @@
 j2se
 ====
 
-here is my all practice projects.
+There are my practice projects about java standard.
 
-open them with eclipse.
+open them with maven.
