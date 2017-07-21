@@ -23,7 +23,7 @@ public class MergeImages {
 	    g.drawImage(background, 0, 0, null);
 	    
 	    // 画上面的图案
-	    g.drawImage(star, 0, 0, null);
+	    g.drawImage(star, 0, 0, 30, 30, null); // 可以指定图片xy位置和宽高大小
 	    
 	    // 输出
 	    ImageIO.write(combined, "JPG", new File("d:/combined.jpg"));
