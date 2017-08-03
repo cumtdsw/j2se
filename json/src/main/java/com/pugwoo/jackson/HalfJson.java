@@ -23,7 +23,8 @@ public class HalfJson {
 		String json = "{\"id\":3,\"name\":\"pugwoo\",\"password\":\"123456789abcdefg\",\"age\":24,\"income\":1234.56789,\"others\":{\"birth\":\"1987-03-30\",\"male\":true,\"interest:\":[\"Computer\",3,\"math\"]}}";
 		// 不支持String json =
 		// "{id:3,name:'pugwoo',password:'123456789abcdefg',age:24,income:1234.56789,others:{birth:'1987-03-30',male:true,interest:['Computer',3,'math']}}";
-
+        // 正确来说，上面的不是json格式
+		
 		Map<?, ?> map = null;
 		start = System.nanoTime();
 		for (int i = 0; i < 100000; i++)
