@@ -8,7 +8,12 @@ Spring也默认支持jackson，国际上也是jackson主流。
 
 jackson，能对空字符串的json转成null的object
 
-### 备选fastjson
+### gson
+
+不再推荐gson，因为它违背java的基本规则，不是通过public的getter获取数据；
+需要new一个Gson，此外gson的性能并不高。
+
+### fastjson(不再推荐)
 
 fastjson（from 2012）:
 
@@ -16,8 +21,3 @@ fastjson（from 2012）:
 - 能对空字符串的json转成null的object
 - 可以统一配置输出格式
 - 使用`@JSONField`注解配置序列化输入和输出的名称和格式
-
-### 不推荐
-
-不再推荐gson，因为它违背java的基本规则，不是通过public的getter获取数据；
-需要new一个Gson，此外gson的性能并不高。
