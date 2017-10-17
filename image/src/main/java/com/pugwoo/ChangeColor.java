@@ -17,6 +17,10 @@ public class ChangeColor {
         for (int i = 0; i < qrcode.getWidth(); i++) {
             for (int j = 0; j < qrcode.getHeight(); j++) {
             	Color color = new Color(qrcode.getRGB(i, j));
+//            	float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
+                // TODO 色彩空间主要有RGB和HSB两种
+            	
+            	// qrcode.setRGB(i, j, rgb); // 改变完颜色后重新设置回去
             }
         }
         ImageIO.write(qrcode, "jpg", new File("D:/qrcode.jpg"));
