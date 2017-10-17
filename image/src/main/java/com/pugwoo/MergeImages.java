@@ -27,6 +27,17 @@ public class MergeImages {
 	    
 	    // 输出
 	    ImageIO.write(combined, "JPG", new File("d:/combined.jpg"));
+	    
+	    // 说明：对于简单图片拼接，只需要不停用drawImage定位并设置到大小就可以了
+	    
+	    // 说明：如果需要剪切出一个圆形，那么用Clip，例如：
+	    /**
+	     *             // 绘制头像
+            int r = 200;
+            graphics2D.setClip(new RoundRectangle2D.Double(280, 100, r, r, r , r));
+            graphics2D.drawImage(headImgRead, 280, 100, 200, 200, null);
+            graphics2D.setClip(null);
+	     */
 	}
 	
 }
