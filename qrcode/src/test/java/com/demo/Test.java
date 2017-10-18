@@ -43,10 +43,9 @@ public class Test {
 		BitMatrix byteMatrix = qrCodeWriter.encode(qrCodeText, BarcodeFormat.QR_CODE, size, size, hintMap);
 		// Make the BufferedImage that are to hold the QRCode
 		int matrixWidth = byteMatrix.getWidth();
+		
 		BufferedImage image = new BufferedImage(matrixWidth, matrixWidth, BufferedImage.TYPE_INT_RGB);
-		image.createGraphics();
-
-		Graphics2D graphics = (Graphics2D) image.getGraphics();
+		Graphics2D graphics = image.createGraphics();
 		graphics.setColor(Color.WHITE);
 		graphics.fillRect(0, 0, matrixWidth, matrixWidth);
 		// Paint and save the image using the ByteMatrix
