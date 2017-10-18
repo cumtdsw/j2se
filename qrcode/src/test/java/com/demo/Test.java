@@ -5,7 +5,8 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Hashtable;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -25,7 +26,7 @@ public class Test {
 	 */
 	public static void main(String[] args) throws WriterException, IOException {
 		String qrCodeText = "https://www.journaldev.com";
-		String filePath = "D:\\JD.png";
+		String filePath = "D:\\qrcode.png";
 		int size = 125;
 		String fileType = "png";
 		File qrFile = new File(filePath);
@@ -36,8 +37,8 @@ public class Test {
 	private static void createQRImage(File qrFile, String qrCodeText, int size, String fileType)
 			throws WriterException, IOException {
 		// Create the ByteMatrix for the QR-Code that encodes the given String
-		Hashtable hintMap = new Hashtable();
-		hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.L);
+		Map<EncodeHintType, Object> hintMap = new HashMap<EncodeHintType, Object>();
+		hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);
 		QRCodeWriter qrCodeWriter = new QRCodeWriter();
 		BitMatrix byteMatrix = qrCodeWriter.encode(qrCodeText, BarcodeFormat.QR_CODE, size, size, hintMap);
 		// Make the BufferedImage that are to hold the QRCode
@@ -49,7 +50,7 @@ public class Test {
 		graphics.setColor(Color.WHITE);
 		graphics.fillRect(0, 0, matrixWidth, matrixWidth);
 		// Paint and save the image using the ByteMatrix
-		graphics.setColor(Color.BLACK);
+		graphics.setColor(Color.BLUE);
 
 		for (int i = 0; i < matrixWidth; i++) {
 			for (int j = 0; j < matrixWidth; j++) {
