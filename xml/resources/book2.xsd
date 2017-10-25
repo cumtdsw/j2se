@@ -1,4 +1,8 @@
-<xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.sunxin.org/book" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" attributeFormDefault="unqualified" 
+   elementFormDefault="qualified" 
+   targetNamespace="http://www.sunxin.org/book" >
+   
   <xs:element name="book">
     <xs:complexType>
       <xs:sequence>
@@ -7,4 +11,5 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  
 </xs:schema>

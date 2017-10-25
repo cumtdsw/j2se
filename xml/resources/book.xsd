@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.sunxin.org/book"
 	targetNamespace="http://www.sunxin.org/book" elementFormDefault="qualified">
+<!-- 说明：targetNamespace一般是公司自己的域名url，以免和别人冲突 -->
 
 	<xs:element name="book" type="bookType" />
 	<xs:complexType name="bookType">
