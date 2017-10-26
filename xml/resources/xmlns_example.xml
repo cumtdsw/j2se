@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <book xmlns="http://www.sunxin.org/book" 
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	  xsi:schemaLocation="http://www.sunxin.org/book http://www.sunxin.org/book.xsd">
+	  xsi:schemaLocation="http://www.sunxin.org/book book2.xsd">
 
 	<title>《Struts 2深入详解》</title>
 	<author>孙鑫</author>
