@@ -11,6 +11,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class SaxParse {
 	
+	// 虽然这些接口比较底层，但依靠它们+类成员变量标识状态，还是可以读出需要的内容。重点是省内存
 	private static class MyHandler extends DefaultHandler {
 
 		@Override
