@@ -54,6 +54,8 @@ public class EchoServer {
 
         // Bind and start to accept incoming connections.
         bootstrap.bind(new InetSocketAddress(port));
+        
+        System.out.println("listen on " + port);
     }
 
     public static void main(String[] args) throws Exception {
