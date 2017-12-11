@@ -24,6 +24,7 @@ public class Server {
 
 			byte[] buf = new byte[1024];
 			// 不停接受客户端请求，单线程，同一时刻只能服务一个客户，另一种方案是采用线程
+			// 此时，新来的客户端会阻塞在连接上，直到超时
 			while (true) {
 				socket = ss.accept(); // 当没有连接时，就阻塞在这里；
 				System.out.println("new client connected: " + socket.getRemoteSocketAddress());

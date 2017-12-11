@@ -42,7 +42,7 @@ public class NIOServerSimple {
 				i.remove();
 
 				// 这就是说，这个key代表着一个channel的某个操作类型？？
-				if (key == serverkey) {
+				if (key == serverkey) { // 这个判断是没有必要的 XXX
 					if (key.isAcceptable()) {
 						SocketChannel client = server.accept();
 						client.configureBlocking(false);

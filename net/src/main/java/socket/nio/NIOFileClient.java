@@ -42,22 +42,18 @@ public class NIOFileClient {
 				int total = 0;
 				FOR: for (;;) {
 					selector.select();
-					Iterator<SelectionKey> iter = selector.selectedKeys()
-							.iterator();
+					Iterator<SelectionKey> iter = selector.selectedKeys().iterator();
 					while (iter.hasNext()) {
 						SelectionKey key = iter.next();
 						iter.remove();
 						if (key.isConnectable()) {
-							SocketChannel channel = (SocketChannel) key
-									.channel();
+							SocketChannel channel = (SocketChannel) key.channel();
 							if (channel.isConnectionPending())
 								channel.finishConnect();
-							channel.write(encoder.encode(CharBuffer
-									.wrap("Hello from " + index)));
+							channel.write(encoder.encode(CharBuffer.wrap("Hello from " + index)));
 							channel.register(selector, SelectionKey.OP_READ);
 						} else if (key.isReadable()) {
-							SocketChannel channel = (SocketChannel) key
-									.channel();
+							SocketChannel channel = (SocketChannel) key.channel();
 							int count = channel.read(buffer);
 							if (count > 0) {
 								total += count;
@@ -71,8 +67,7 @@ public class NIOFileClient {
 				}
 
 				double last = (System.currentTimeMillis() - start) * 1.0 / 1000;
-				System.out.println("Thread " + index + " downloaded " + total
-						+ "bytes in " + last + "s.");
+				System.out.println("Thread " + index + " downloaded " + total + "bytes in " + last + "s.");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

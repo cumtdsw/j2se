@@ -111,8 +111,9 @@ public class NIOFileServer {
 				System.out.println("Client >>" + charBuffer.toString());
 				SelectionKey wKey = channel.register(selector, SelectionKey.OP_WRITE);
 				wKey.attach(new HandleClient());
-			} else
+			} else {
 				channel.close();
+			}
 			clientBuffer.clear();
 		} else if (key.isWritable()) { // 写事件
 			SocketChannel channel = (SocketChannel) key.channel();

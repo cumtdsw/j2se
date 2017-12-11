@@ -50,13 +50,12 @@ public class NIOEchoServer {
 			while (keyIter.hasNext()) {
 				SelectionKey selectionKey = keyIter.next();
 
-				// 一定要删除，否则selector会陷入无尽的循环中，或者其它错误
+				// 处理完后 一定要删除，否则selector会陷入无尽的循环中，或者其它错误
 				keyIter.remove();
 				
 				// 连接新Client并加入监听
 				if (selectionKey.isAcceptable()) {
-					ServerSocketChannel server = (ServerSocketChannel) selectionKey
-							.channel();
+					ServerSocketChannel server = (ServerSocketChannel) selectionKey.channel();
 					SocketChannel client = server.accept();
 					// client可能为null(如果忘记设置server为非阻塞时)
 					if (client != null) {
@@ -68,7 +67,7 @@ public class NIOEchoServer {
 						// 【只有数据可以写时才注册OP_WRITE操作】
 						// 避免死锁的一个简单方法就是不要在同一个socket同时注册多个操作。不要同时注册OP_READ和OP_WRITE，要么只注册OP_READ，要么只注册OP_WRITE。
 						SelectionKey key = client.register(selector, SelectionKey.OP_READ);
-						key.attach(ByteBuffer.allocate(128));
+						key.attach(ByteBuffer.allocate(128)); // 可以加附件，方便事件发生是读出
 					}
 				} else {
 					handleClient(selectionKey);
@@ -88,11 +87,9 @@ public class NIOEchoServer {
 				ByteBuffer buffer = (ByteBuffer) selectionKey.attachment();
 				int count = client.read(buffer);
 				if (count > 0) {
-					System.out.println("recv-->"
-							+ new String(buffer.array(), 0, count, "UTF-8"));
-
+					System.out.println("recv-->" + new String(buffer.array(), 0, count, "UTF-8"));
 					buffer.flip();
-					// 等待写入
+					// 等待可以写入的事件
 					selectionKey.interestOps(SelectionKey.OP_WRITE);
 				}
 			}
@@ -111,8 +108,7 @@ public class NIOEchoServer {
 //				    return;
 //				}
 
-				if (buffer.remaining() == 0) { // write finished, switch to
-												// OP_READ
+				if (buffer.remaining() == 0) { // write finished, switch to OP_READ
 					buffer.clear();
 					selectionKey.interestOps(SelectionKey.OP_READ); // 等待读取
 				}
