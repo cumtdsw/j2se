@@ -24,7 +24,7 @@ public class NIOServer {
 	/* 发送数据缓冲区 */
 	private ByteBuffer receivebuffer = ByteBuffer.allocate(BUFFER_SIZE);
 	/* 选择器，相当于一个观察者，观察着若干的channel */
-	private Selector selector;
+	private Selector selector; // selector的wakeup方法（另外一个线程调）可以唤醒阻塞在select的selector线程
 
 	public NIOServer(int port) throws IOException {
 		// 打开服务器套接字通道
