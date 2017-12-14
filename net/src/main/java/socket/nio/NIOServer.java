@@ -90,6 +90,8 @@ public class NIOServer {
 				receiveText = new String(receivebuffer.array(), 0, count);
 				System.out.println("服务器端接受客户端数据--:" + receiveText);
 				client.register(selector, SelectionKey.OP_WRITE);
+			} else if (count < 0) {
+				selectionKey.cancel();
 			}
 			// 没有考虑到缓存区满了怎么办？
 		} else if (selectionKey.isWritable()) {

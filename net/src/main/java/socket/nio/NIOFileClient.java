@@ -58,7 +58,7 @@ public class NIOFileClient {
 							if (count > 0) {
 								total += count;
 								buffer.clear();
-							} else {
+							} else if (count < 0){
 								client.close();
 								break FOR;
 							}

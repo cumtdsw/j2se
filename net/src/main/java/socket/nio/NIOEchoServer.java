@@ -91,6 +91,9 @@ public class NIOEchoServer {
 					buffer.flip();
 					// 等待可以写入的事件
 					selectionKey.interestOps(SelectionKey.OP_WRITE);
+				} else if (count < 0) {
+					System.out.println("客户端关闭");
+					selectionKey.cancel();
 				}
 			}
 			// 写
@@ -107,7 +110,6 @@ public class NIOEchoServer {
 //					client.close();
 //				    return;
 //				}
-
 				if (buffer.remaining() == 0) { // write finished, switch to OP_READ
 					buffer.clear();
 					selectionKey.interestOps(SelectionKey.OP_READ); // 等待读取
