@@ -5,17 +5,17 @@
 # 概念
 
 Bootstrap “引导程序”类，初始化channel的辅助类，子类有：
-
 1. ServerBootstrap  服务器端，接收connection请求
 2. ClientBootstrap  客户端，发送connectoin请求
 3. ConnectionlessBootstrap 对应于UDP
 
 感觉上，netty是一个封装得很好的基于NIO的【事件驱动】网络通信框架。(事件驱动状态机)
 我们只需要定义哪个事件发生时应该做什么事情即可。
+所以，netty设计的服务端和客户端的Handler是等同的。
 
 Channels.pipeline定义了若干个handler，用于处理发生的事件。
 
-【Uptream接收请求】对应于ChannelUpstreamHandler，这一过程相当于接收处理外来请求的过程。upstream event有：
+【Uptream接收请求（上行）】对应于ChannelUpstreamHandler，这一过程相当于接收处理外来请求的过程。upstream event有：
 messageReceived: 收到消息时触发
 exceptionCaught: 异常发生时触发
 channelOpen: channel打开时触发，此时还没有bound或connect，这里不应该执行太慢的任务
@@ -29,7 +29,7 @@ writeComplete: 当写入channel的事件完成时触发
 childChannelOpen:
 childChannelClosed:
 
-【Downstream发送请求】对应于ChannelDownstreamHandler，这一过程相当于向外发送数据的过程。
+【Downstream发送请求（下行）】对应于ChannelDownstreamHandler，这一过程相当于向外发送数据的过程。
  downstream event有：”write”、”bind”、”unbind”、 “connect”、 “disconnect”、”close”
 
 【ChannelPipeline】
