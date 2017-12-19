@@ -14,11 +14,19 @@ public class TestByteBuffer {
 		int id = 3;
 		int age = 18;
 		
-		ByteBuffer byteBuffer = ByteBuffer.allocate(128); 
+		// 没有自动扩容功能，要用netty的ChannelBuffer.dynamicBuffer()方法
+		ByteBuffer byteBuffer = ByteBuffer.allocate(128);  
 		byteBuffer.putInt(id); // int 是大端方式，先写高位再写低位
 		byteBuffer.putInt(age);
 		
-		System.out.println(Arrays.toString(byteBuffer.array()));
+		byte[] output = byteBuffer.array(); // 序列化出来的byte[]
+		System.out.println(Arrays.toString(output));
+		
+		// ========= 反序列化
+		
+		ByteBuffer byteBuffer2 = ByteBuffer.wrap(output);
+		System.out.println("id:" + byteBuffer2.getInt());
+		System.out.println("age:" + byteBuffer2.getInt());
 	}
 	
 }
